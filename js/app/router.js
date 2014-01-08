@@ -54,6 +54,8 @@ define(function (require) {
         initialize: function() {   
             
             body = $('body');
+            
+            this.bind( "route", this.routeChange);
 
             $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {         
                                   
@@ -68,7 +70,12 @@ define(function (require) {
            });
 
         },
-        
+                
+        routeChange: function(){
+    
+            $('html,body').scrollTop(0);
+    
+        },
 
         home: function () {
             //body.removeClass('left-nav');

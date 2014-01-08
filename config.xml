@@ -2,10 +2,10 @@
 <widget id="com.schoolspace.athlonecc" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Athlonecc</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Displays information about and latest news from Athlone Community College, Co. Westmeath, Ireland.
     </description>
-    <author email="dev@callback.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="schoolspaceweb@gmail.com" href="http://www.schoolspace.co">
+        Schoolspace
     </author>
     <content src="index.html" />
     <access origin="*" />
