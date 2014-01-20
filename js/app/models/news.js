@@ -12,7 +12,7 @@ define(function (require) {
         pubDate = "", 
         src="",
         other_src="",
-        
+        href,
         News = Backbone.Model.extend({  
 
         }),
@@ -21,14 +21,14 @@ define(function (require) {
         NewsCollection = Backbone.Collection.extend({
 
             model: News,
-            //url: 'http://athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=1&format=raw',
+            url: 'http://athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=1&format=raw',
             
             //This is used so I can test on a browser. On a device, use the direct link
           
-            
+            /*
             url: function(){
                     return "/school-proxy.php?type=news";
-                 },
+                 },*/
             
         
             parse: function (data) {
@@ -66,6 +66,22 @@ define(function (require) {
                        }
                        x++;
                     });
+                    
+                    //if any pdf's, change the link
+                    if($(description).find('a').length>0){
+                        $(description).find('a').each(function(i, obj){
+                            href = "";
+                            href = $(obj).attr('href');
+                            if(href.substr(href.length - 4)===".pdf" || href.substr(href.length - 4)===".PDF"){
+                                //so its a pdf, replace link (THIS ONLY WORKS WITH ANDROID)
+                                description = description.replace($(obj)[0].outerHTML, '<div id="pdf-link" rel="'+href+'" >'+$(obj).text()+'</div>');
+
+                            }
+                        });
+                    }
+                    else{
+                        href = "";
+                    }
                     
                     //if no source found, use school icon
                     if(src.length===0){

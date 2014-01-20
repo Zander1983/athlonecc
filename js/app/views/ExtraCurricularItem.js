@@ -21,6 +21,19 @@ define(function (require) {
             this.$el.html(template({side_nav:side_nav, model:this.model.attributes}));
             return this;
         },
+                
+        events: {
+             "click #pdf-link"   : 'pdfClicked',
+        },
+        
+        pdfClicked: function(e){
+            console.log('in pdf clicked');
+            var href = $(e.currentTarget).attr('rel');
+            
+            //Android ONLY - ios can you inAppBrowser
+            navigator.app.loadUrl(href, { openExternal:true });
+            
+        },
         
         removeDescriptionStyles: function(){
       

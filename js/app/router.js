@@ -18,7 +18,9 @@ define(function (require) {
         calendar,
         albums,
         photos,
-        device,
+        tweets,
+        deviceModel,
+        that,
         body,
         homeView = new HomeView();
 
@@ -52,21 +54,42 @@ define(function (require) {
         },
         
         initialize: function() {   
-            
-            body = $('body');
+            that = this;
+            that.body = $('body');
             
             this.bind( "route", this.routeChange);
 
             $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {         
-                                  
+
+                if(options.api==true){
+                    //172.16.22.68
+                    //options.url = "http://localhost/schoolspace/device_api" + options.url;
+                    
+                    if(options.update_notification==true){
+                       options.url = "http://pushcloud.schoolspace.ie/update_notification" + options.url+"";                        
+                    }
+                    else{
+                        options.url = "http://pushcloud.schoolspace.ie" + options.url;                        
+                    }
+                    
+
+
+                    console.log('in api true and options.url is ');
+                    console.log(options.url);
+                    
+                }
+                else{
                     if(options.full_url==true){
    
                     }
                     else{
-                        options.url = "http://localhost/schoolspace/cli/athlone/platforms/android/assets/www/scripts" + options.url;
-                        //options.url = "http://localhost/schoolspace/athlone/assets/www/scripts" + options.url
+                        //this is when testing in a browser
+                        //options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
+                        options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
                     }
-            
+                }
+  
+   
            });
 
         },
@@ -83,21 +106,24 @@ define(function (require) {
         },
       
         getNews: function (id) {
-            //body.removeClass('left-nav');
+
             require(["app/models/news", "app/views/NewsList"], function (model, NewsList) {
        
                 if(typeof(news)==='undefined' || news===null){
                     news = new model.NewsCollection();
-                    
                     news.fetch({
-                        full_url: false,
+                        full_url: true,
                         success: function (collection) {
-
+                            that.body.removeClass('left-nav');
                             slider.slidePage(new NewsList({collection: collection}).$el, body, body);
+                        },
+                        error: function(){
+                                console.log('there was an error');
                         }
                     });
                 }
                 else{ 
+                    that.body.removeClass('left-nav');
                     slider.slidePage(new NewsList({collection: news}).$el, body, body);
                 }
                             
@@ -107,6 +133,7 @@ define(function (require) {
         getNewsItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/NewsItem"], function (NewsItem) {
+                 that.body.removeClass('left-nav');   
                  slider.slidePage(new NewsItem({model: news.get(id)}).$el, body, body);
                            
             });
@@ -122,12 +149,13 @@ define(function (require) {
                     staff.fetch({
                         full_url: true,
                         success: function (collection) {
-
+                            that.body.removeClass('left-nav');
                             slider.slidePage(new StaffList({collection: collection}).$el, body, body);
                         }
                     });
                 }
                 else{
+                    that.body.removeClass('left-nav');
                     slider.slidePage(new StaffList({collection: staff}).$el, body, body);
                 }
                             
@@ -152,12 +180,13 @@ define(function (require) {
                     parents.fetch({
                         full_url: true,
                         success: function (collection) {
-
+                            that.body.removeClass('left-nav');
                             slider.slidePage(new ParentsList({collection: collection}).$el, body, body);
                         }
                     });
                 }
                 else{
+                    that.body.removeClass('left-nav');
                     slider.slidePage(new ParentsList({collection: parents}).$el, body, body);
                 }
                             
@@ -167,6 +196,7 @@ define(function (require) {
         getParentsItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/ParentsItem"], function (ParentsItem) {
+                 that.body.removeClass('left-nav');   
                  slider.slidePage(new ParentsItem({model: parents.get(id)}).$el, body, body);
                                  
             });
@@ -183,13 +213,14 @@ define(function (require) {
                     sports.fetch({
                         full_url: true,
                         success: function (collection) {
-
+                            that.body.removeClass('left-nav');
                             slider.slidePage(new SportsList({collection: collection}).$el, body, body);
                            // $("html, body").animate({ scrollTop: 0 }, 'slow');
                         } 
                     });
                 }
                 else{
+                    that.body.removeClass('left-nav');
                     slider.slidePage(new SportsList({collection: sports}).$el, body, body);
                 }
                             
@@ -199,6 +230,7 @@ define(function (require) {
         getSportsItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/SportsItem"], function (SportsItem) {
+                 that.body.removeClass('left-nav');
                  slider.slidePage(new SportsItem({model: sports.get(id)}).$el, body, body);
                                  
             });
@@ -214,12 +246,13 @@ define(function (require) {
                     curriculum.fetch({
                         full_url: true,
                         success: function (collection) {
-
+                            that.body.removeClass('left-nav');
                             slider.slidePage(new CurriculumList({collection: collection}).$el, body, body);
                         }
                     });
                 }
                 else{
+                    that.body.removeClass('left-nav');
                     slider.slidePage(new CurriculumList({collection: curriculum}).$el, body, body);
                 }
                             
@@ -229,6 +262,7 @@ define(function (require) {
         getCurriculumItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/CurriculumItem"], function (CurriculumItem) {
+                 that.body.removeClass('left-nav');   
                  slider.slidePage(new CurriculumItem({model: curriculum.get(id)}).$el, body, body);
                                  
             });
@@ -244,12 +278,13 @@ define(function (require) {
                     extracurricular.fetch({
                         full_url: true,
                         success: function (collection) {
-
+                            that.body.removeClass('left-nav');
                             slider.slidePage(new ExtraCurricularList({collection: collection}).$el, body, body);
                         }
                     });
                 }
                 else{
+                    that.body.removeClass('left-nav');
                     slider.slidePage(new ExtraCurricularList({collection: extracurricular}).$el, body);
                 }
                             
@@ -259,6 +294,7 @@ define(function (require) {
         getExtraCurricularItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/ExtraCurricularItem"], function (ExtraCurricularItem) {
+                 that.body.removeClass('left-nav');
                  slider.slidePage(new ExtraCurricularItem({model: extracurricular.get(id)}).$el, body);
                                  
             });
@@ -274,12 +310,13 @@ define(function (require) {
                     student.fetch({
                         full_url: true,
                         success: function (collection) {
-
+                            that.body.removeClass('left-nav');
                             slider.slidePage(new StudentList({collection: collection}).$el, body);
                         }
                     });
                 }
                 else{
+                    that.body.removeClass('left-nav');
                     slider.slidePage(new StudentList({collection: student}).$el, body);
                 }
                             
@@ -289,6 +326,7 @@ define(function (require) {
         getStudentItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/StudentItem"], function (StudentItem) {
+                 that.body.removeClass('left-nav');
                  slider.slidePage(new StudentItem({model: student.get(id)}).$el, body);
                                  
             });
@@ -299,18 +337,21 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/models/tweet", "app/views/TweetList"], function (models, TweetList) {
 
-                var tweets = new models.TweetCollection();               
-             
-                tweets.fetch({
-                    not_api: true,
-                    success: function (collection) {
-                        //$("#loading").hide();
-                        slider.slidePage(new TweetList({collection: collection}).$el, body);
-                    },
-                    error: function(){
-                        console.log('there was an error');
-                    }
-                });
+                if(typeof(tweets)==='undefined' || tweets===null){
+                    tweets = new models.TweetCollection(); 
+                    
+                    tweets.fetch({
+                        full_url: true,
+                        success: function (collection) {
+                            that.body.removeClass('left-nav');
+                            slider.slidePage(new TweetList({collection: collection}).$el, body);
+                        }
+                    });
+                }
+                else{
+                    that.body.removeClass('left-nav');
+                    slider.slidePage(new TweetList({collection: tweets}).$el, body);
+                }
                                  
             });
            
@@ -326,13 +367,13 @@ define(function (require) {
                     calendar.fetch({
                         full_url: true,
                         success: function (collection) {
-                            //body.removeClass('left-nav');
+                            that.body.removeClass('left-nav');
                             slider.slidePage(new CalendarList({collection: collection}).$el, body);                          
                         }
                     });
                 }
                 else{
-                    //body.removeClass('left-nav');
+                    that.body.removeClass('left-nav');
                     slider.slidePage(new CalendarList({collection: calendar}).$el, body);
                 }
                             
@@ -342,7 +383,7 @@ define(function (require) {
                 
         getCalendarItem: function (id) {
             require(["app/views/CalendarItem"], function (CalendarItem) {
-                    //body.removeClass('left-nav');
+                    that.body.removeClass('left-nav');
                     slider.slidePage(new CalendarItem({model: calendar.get(id)}).$el, body);
                                  
             });
@@ -351,7 +392,7 @@ define(function (require) {
         getContact: function () {
             
             require(["app/views/Contact"], function (Contact) { 
-                //body.removeClass('left-nav');
+                that.body.removeClass('left-nav');
                 slider.slidePage(new Contact().$el, body);               
              });
         },
@@ -361,7 +402,7 @@ define(function (require) {
             require(["app/views/Map"], function (Map) {    
                 var mapView = new Map();
                 //mapView.delegateEvents();
-                //body.removeClass('left-nav');
+                that.body.removeClass('left-nav');
                 slider.slidePage(mapView.$el, body);
                 mapView.render();
                 //google.maps.event.trigger(mapView.map, 'resize');
@@ -378,7 +419,7 @@ define(function (require) {
                     albums.fetch({
                         full_url: true,
                         success: function (collection) {
-
+                            that.body.removeClass('left-nav');
                             slider.slidePage(new AlbumList({collection: collection}).$el, body, body);
                         }
                     });
@@ -394,21 +435,21 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/models/photo", "app/views/PhotoList"], function (model, PhotoList) {
        
-                //if(typeof(photos)==='undefined' || photos===null){
+                if(typeof(photos)==='undefined' || photos===null){
                     photos = new model.PhotoCollection([], {photoset_id:id});
                     
                     photos.fetch({
                         full_url: true,
                         success: function (collection) {
-                            console.log('photos are ');
-                            console.log(photos);
+                            that.body.removeClass('left-nav');
                             slider.slidePage(new PhotoList({collection: collection}).$el, body, body);
                         }
                     });
-               /* }
+                }
                 else{ 
+                    that.body.removeClass('left-nav');
                     slider.slidePage(new PhotoList({collection: photos}).$el, body, body);
-                }*/
+                }
                             
             });
         },
@@ -416,6 +457,7 @@ define(function (require) {
         getPhotoItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/PhotoItem"], function (PhotoItem) {
+                 that.body.removeClass('left-nav');
                  slider.slidePage(new PhotoItem({model: photos.get(id)}).$el, body, body);
                            
             });
@@ -425,26 +467,37 @@ define(function (require) {
         getNotification: function () {
             
             require(["app/models/device", "app/views/Notification"], function (model, Notification) {
-                    
-                    var storage = window.localStorage;
-                    var device_id = storage.getItem('cbccork_device_id');
-                    
-                    device = new model.Device({id:device_id});
+                
+                  if(typeof(deviceModel)==='undefined' || deviceModel===null){
 
-                    if(typeof(device_id)==='undefined' || device_id===null){
-                      
+                        var storage = window.localStorage;
+                        var device_id = storage.getItem('athlonecc_device_id');
+                        var api_key = storage.getItem('athlonecc_api_key');
+
+                        deviceModel = new model.Device({id:device_id});
+
+                        if(typeof(device_id)==='undefined' || device_id===null || typeof(api_key)==='undefined' || api_key===null){
+                            that.body.removeClass('left-nav');
+                            alert('There was a problem with notifications, please contact the developer');
+                            window.location.hash = "news";
+                        }
+                        else{
+                            deviceModel.fetch({
+                                api: true,
+                                headers: {device_id:device_id,api_key:api_key},        
+                                success: function (data) {
+                                    that.body.removeClass('left-nav');
+                                    slider.slidePage(new Notification({model: data, storage:storage}).$el);                          
+                                }
+                            });
+                        }
+                    
+                  }else{    
+                        console.log('in the else');
                         that.body.removeClass('left-nav');
-                        slider.slidePage(new Notification({model: device, storage:storage}).$el);
-                    }
-                    else{
-                        device.fetch({
-                            api: true,
-                            success: function (data) {
-                                that.body.removeClass('left-nav');
-                                slider.slidePage(new Notification({model: data, storage:storage}).$el);                          
-                            }
-                        });
-                    }
+                        slider.slidePage(new Notification({model: deviceModel, storage:storage}).$el);    
+                  }
+
        
              });
         },

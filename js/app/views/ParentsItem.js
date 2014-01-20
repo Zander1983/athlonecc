@@ -5,7 +5,7 @@ define(function (require) {
     var $                   = require('jquery'),
         _                   = require('underscore'),
         Backbone            = require('backbone'),
-        tpl_pdf             = require('text!tpl/ParentsPDFItem.html'),
+        UsefulFuncs         = require('app/utils/useful_func'),
         tpl                 = require('text!tpl/ParentsItem.html'),
         side_nav            = require('text!tpl/SideNav.html'),
         UsefulFuncs         = require('app/utils/useful_func'),
@@ -15,8 +15,8 @@ define(function (require) {
     return Backbone.View.extend({
 
         initialize: function () {
+            this.removeDescriptionStyles();
             this.render();
-
         },
         
         events: {
@@ -31,15 +31,19 @@ define(function (require) {
             navigator.app.loadUrl(href, { openExternal:true });
             
         },
+                
+        removeDescriptionStyles: function(){
+      
+            var description = UsefulFuncs.removeStyles(this.model.attributes.description);
+            
+            if(description.length>0){
+                this.model.set({description: description});
+            }     
+        },
 
         render: function () {
-            if(this.model.get('pdf')===true){
-                this.$el.html(template_pdf({side_nav:side_nav, model:this.model.attributes}));                
-            }
-            else{
-                this.$el.html(template({side_nav:side_nav, model:this.model.attributes}));               
-            }
-
+          
+            this.$el.html(template({side_nav:side_nav, model:this.model.attributes}));               
             return this;
         },
         

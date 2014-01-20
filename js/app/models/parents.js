@@ -47,6 +47,7 @@ define(function (require) {
                     
                     pubDate = pubDate.substring(0, pubDate.length-12);
                     
+                    /*
                     if($(description).find('a').length>0){
                         $(description).find('a').each(function(i, obj){
                             href = "";
@@ -65,11 +66,27 @@ define(function (require) {
                         href = "";
                         text = "";
                         pdf = false;
+                    }*/
+                    
+                    //if any pdf's, change the link
+                    if($(description).find('a').length>0){
+                        $(description).find('a').each(function(i, obj){
+                            href = "";
+                            href = $(obj).attr('href');
+                            if(href.substr(href.length - 4)===".pdf" || href.substr(href.length - 4)===".PDF"){
+                                //so its a pdf, replace link (THIS ONLY WORKS WITH ANDROID)
+                                description = description.replace($(obj)[0].outerHTML, '<div id="pdf-link" rel="'+href+'" >'+$(obj).text()+'</div>');
+
+                            }
+                        });
+                    }
+                    else{
+                        href = "";
                     }
              
      
                     parsed.push({id:id, title: title, description:description, pubDate:pubDate,
-                                pdf:pdf, href:href, text:text, src:src});
+                                src:src});
                     title, description, pubDate, pdf, href, text = "";
                    id++;
                 });
