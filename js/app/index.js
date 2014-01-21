@@ -120,6 +120,7 @@ var app = {
 
     // result contains any message sent from the plugin call
     successHandler: function(result) {
+        
        //alert('Callback Success! Result = '+result)
     },
     errorHandler:function(error) { 
@@ -149,11 +150,12 @@ var app = {
                                 headers :{device_id:"63843",
                                 api_key:"hv7Vgd4jsbb"},
                                 success: function (data) {
-                                    //alert('in the success');
+                                    alert('in the success');
                                     window.localStorage.setItem('athlonecc_device_id', data.id);
                                     window.localStorage.setItem('athlonecc_api_key', data.get('api_key'));
                                 },
                                 error:   function(model, xhr, options){
+                                   alert('failed to save'); 
                                    console.log('error details are: ');
                                    console.log(xhr.responseText);
                                 },
@@ -167,18 +169,18 @@ var app = {
      * For Android Phones
      */
     onNotificationGCM: function(e) {
-                    
+        
         switch( e.event )
         {
         
             case 'registered':
                 if ( e.regid.length > 0 )
                 {
-     
                     var device_id = window.localStorage.getItem('athlonecc_device_id');
                     var api_key = window.localStorage.getItem('athlonecc_api_key');
  
-               
+                    console.log('device_id is ');
+                    console.log(device_id);
                     if(typeof(device_id)==='undefined' || device_id===null){
                         //we dont have a device id so register it and save to local storage. 
                         //should only ever enter here once     
@@ -196,7 +198,7 @@ var app = {
                 break;
 
             case 'message':
-         
+                
                 window.location.hash = "article/"+e.payload.article_id;
          
                 break;

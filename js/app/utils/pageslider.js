@@ -14,10 +14,7 @@ define(function (require) {
         };
 
         // Use this function if you want PageSlider to automatically determine the sliding direction based on the state history
-        this.slidePage = function (page, body) {
-
-            body.removeClass('left-nav');
-            $('.side-nav').hide('slow');
+        this.slidePage = function (page) {
 
             var l = stateHistory.length,
                 state = window.location.hash;

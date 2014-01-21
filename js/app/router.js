@@ -20,9 +20,7 @@ define(function (require) {
         photos,
         tweets,
         deviceModel,
-        that,
-        body,
-        homeView = new HomeView();
+        that;
 
     return Backbone.Router.extend({
 
@@ -51,6 +49,7 @@ define(function (require) {
             "photos/:id": "getPhotos",
             "photo-item/:id": "getPhotoItem",
             "notification": "getNotification",
+            "article/:id": "getArticle",
         },
         
         initialize: function() {   
@@ -66,16 +65,12 @@ define(function (require) {
                     //options.url = "http://localhost/schoolspace/device_api" + options.url;
                     
                     if(options.update_notification==true){
-                       options.url = "http://pushcloud.schoolspace.ie/update_notification" + options.url+"";                        
+                       options.url = "http://push.schoolspace.ie/device_api/update_notification" + options.url+"";                        
                     }
                     else{
-                        options.url = "http://pushcloud.schoolspace.ie" + options.url;                        
+                        options.url = "http://push.schoolspace.ie/device_api" + options.url;                        
                     }
                     
-
-
-                    console.log('in api true and options.url is ');
-                    console.log(options.url);
                     
                 }
                 else{
@@ -100,10 +95,6 @@ define(function (require) {
     
         },
 
-        home: function () {
-            //body.removeClass('left-nav');
-            slider.slidePage(homeView.$el, body);
-        },
       
         getNews: function (id) {
 
@@ -115,7 +106,7 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new NewsList({collection: collection}).$el, body, body);
+                            slider.slidePage(new NewsList({collection: collection}).$el);
                         },
                         error: function(){
                                 console.log('there was an error');
@@ -124,7 +115,7 @@ define(function (require) {
                 }
                 else{ 
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new NewsList({collection: news}).$el, body, body);
+                    slider.slidePage(new NewsList({collection: news}).$el);
                 }
                             
             });
@@ -134,7 +125,7 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/views/NewsItem"], function (NewsItem) {
                  that.body.removeClass('left-nav');   
-                 slider.slidePage(new NewsItem({model: news.get(id)}).$el, body, body);
+                 slider.slidePage(new NewsItem({model: news.get(id)}).$el);
                            
             });
         },
@@ -150,13 +141,13 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new StaffList({collection: collection}).$el, body, body);
+                            slider.slidePage(new StaffList({collection: collection}).$el);
                         }
                     });
                 }
                 else{
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new StaffList({collection: staff}).$el, body, body);
+                    slider.slidePage(new StaffList({collection: staff}).$el);
                 }
                             
             });
@@ -165,7 +156,7 @@ define(function (require) {
         getStaffItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/StaffItem"], function (StaffItem) {
-                 slider.slidePage(new StaffItem({model: staff.get(id)}).$el, body, body);
+                 slider.slidePage(new StaffItem({model: staff.get(id)}).$el);
                                  
             });
         },
@@ -181,13 +172,13 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new ParentsList({collection: collection}).$el, body, body);
+                            slider.slidePage(new ParentsList({collection: collection}).$el);
                         }
                     });
                 }
                 else{
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new ParentsList({collection: parents}).$el, body, body);
+                    slider.slidePage(new ParentsList({collection: parents}).$el);
                 }
                             
             });
@@ -197,7 +188,7 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/views/ParentsItem"], function (ParentsItem) {
                  that.body.removeClass('left-nav');   
-                 slider.slidePage(new ParentsItem({model: parents.get(id)}).$el, body, body);
+                 slider.slidePage(new ParentsItem({model: parents.get(id)}).$el);
                                  
             });
         },
@@ -214,14 +205,14 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new SportsList({collection: collection}).$el, body, body);
-                           // $("html, body").animate({ scrollTop: 0 }, 'slow');
+                            slider.slidePage(new SportsList({collection: collection}).$el);
+                           // $("html").animate({ scrollTop: 0 }, 'slow');
                         } 
                     });
                 }
                 else{
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new SportsList({collection: sports}).$el, body, body);
+                    slider.slidePage(new SportsList({collection: sports}).$el);
                 }
                             
             });
@@ -231,7 +222,7 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/views/SportsItem"], function (SportsItem) {
                  that.body.removeClass('left-nav');
-                 slider.slidePage(new SportsItem({model: sports.get(id)}).$el, body, body);
+                 slider.slidePage(new SportsItem({model: sports.get(id)}).$el);
                                  
             });
         },
@@ -247,13 +238,13 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new CurriculumList({collection: collection}).$el, body, body);
+                            slider.slidePage(new CurriculumList({collection: collection}).$el);
                         }
                     });
                 }
                 else{
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new CurriculumList({collection: curriculum}).$el, body, body);
+                    slider.slidePage(new CurriculumList({collection: curriculum}).$el);
                 }
                             
             });
@@ -263,7 +254,7 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/views/CurriculumItem"], function (CurriculumItem) {
                  that.body.removeClass('left-nav');   
-                 slider.slidePage(new CurriculumItem({model: curriculum.get(id)}).$el, body, body);
+                 slider.slidePage(new CurriculumItem({model: curriculum.get(id)}).$el);
                                  
             });
         },
@@ -279,13 +270,13 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new ExtraCurricularList({collection: collection}).$el, body, body);
+                            slider.slidePage(new ExtraCurricularList({collection: collection}).$el);
                         }
                     });
                 }
                 else{
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new ExtraCurricularList({collection: extracurricular}).$el, body);
+                    slider.slidePage(new ExtraCurricularList({collection: extracurricular}).$el);
                 }
                             
             });
@@ -295,7 +286,7 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/views/ExtraCurricularItem"], function (ExtraCurricularItem) {
                  that.body.removeClass('left-nav');
-                 slider.slidePage(new ExtraCurricularItem({model: extracurricular.get(id)}).$el, body);
+                 slider.slidePage(new ExtraCurricularItem({model: extracurricular.get(id)}).$el);
                                  
             });
         },
@@ -311,13 +302,13 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new StudentList({collection: collection}).$el, body);
+                            slider.slidePage(new StudentList({collection: collection}).$el);
                         }
                     });
                 }
                 else{
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new StudentList({collection: student}).$el, body);
+                    slider.slidePage(new StudentList({collection: student}).$el);
                 }
                             
             });
@@ -327,7 +318,7 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/views/StudentItem"], function (StudentItem) {
                  that.body.removeClass('left-nav');
-                 slider.slidePage(new StudentItem({model: student.get(id)}).$el, body);
+                 slider.slidePage(new StudentItem({model: student.get(id)}).$el);
                                  
             });
         },
@@ -344,13 +335,13 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new TweetList({collection: collection}).$el, body);
+                            slider.slidePage(new TweetList({collection: collection}).$el);
                         }
                     });
                 }
                 else{
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new TweetList({collection: tweets}).$el, body);
+                    slider.slidePage(new TweetList({collection: tweets}).$el);
                 }
                                  
             });
@@ -368,13 +359,13 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new CalendarList({collection: collection}).$el, body);                          
+                            slider.slidePage(new CalendarList({collection: collection}).$el);                          
                         }
                     });
                 }
                 else{
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new CalendarList({collection: calendar}).$el, body);
+                    slider.slidePage(new CalendarList({collection: calendar}).$el);
                 }
                             
             });
@@ -384,7 +375,7 @@ define(function (require) {
         getCalendarItem: function (id) {
             require(["app/views/CalendarItem"], function (CalendarItem) {
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new CalendarItem({model: calendar.get(id)}).$el, body);
+                    slider.slidePage(new CalendarItem({model: calendar.get(id)}).$el);
                                  
             });
         },  
@@ -393,7 +384,7 @@ define(function (require) {
             
             require(["app/views/Contact"], function (Contact) { 
                 that.body.removeClass('left-nav');
-                slider.slidePage(new Contact().$el, body);               
+                slider.slidePage(new Contact().$el);               
              });
         },
                 
@@ -403,7 +394,7 @@ define(function (require) {
                 var mapView = new Map();
                 //mapView.delegateEvents();
                 that.body.removeClass('left-nav');
-                slider.slidePage(mapView.$el, body);
+                slider.slidePage(mapView.$el);
                 mapView.render();
                 //google.maps.event.trigger(mapView.map, 'resize');
              });
@@ -420,12 +411,12 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new AlbumList({collection: collection}).$el, body, body);
+                            slider.slidePage(new AlbumList({collection: collection}).$el);
                         }
                     });
                 }
                 else{ 
-                    slider.slidePage(new AlbumList({collection: albums}).$el, body, body);
+                    slider.slidePage(new AlbumList({collection: albums}).$el);
                 }
                             
             });
@@ -442,13 +433,13 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new PhotoList({collection: collection}).$el, body, body);
+                            slider.slidePage(new PhotoList({collection: collection}).$el);
                         }
                     });
                 }
                 else{ 
                     that.body.removeClass('left-nav');
-                    slider.slidePage(new PhotoList({collection: photos}).$el, body, body);
+                    slider.slidePage(new PhotoList({collection: photos}).$el);
                 }
                             
             });
@@ -458,7 +449,7 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/views/PhotoItem"], function (PhotoItem) {
                  that.body.removeClass('left-nav');
-                 slider.slidePage(new PhotoItem({model: photos.get(id)}).$el, body, body);
+                 slider.slidePage(new PhotoItem({model: photos.get(id)}).$el);
                            
             });
         },
@@ -500,6 +491,31 @@ define(function (require) {
 
        
              });
+        },
+        
+        getArticle: function (id) {
+             
+            require(["app/models/article", "app/views/Article"], function (models, Article) {
+                
+                var storage = window.localStorage;
+                var device_id = storage.getItem('athlonecc_device_id');
+                var api_key = storage.getItem('athlonecc_api_key');
+             
+                var article = new models.Article({id: id});
+                
+                article.fetch({
+                    api: true,
+                    headers: {device_id:device_id,api_key:api_key},
+                    success: function (data) {
+                        console.log('in the success, going to the Article view');
+                        slider.slidePage(new Article({model: data}).$el);
+                    },
+                    error: function(model, xhr, options){
+                        console.log('failed to fecth artcie, response is ');
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
         },
 
     });

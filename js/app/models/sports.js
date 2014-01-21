@@ -68,21 +68,6 @@ define(function (require) {
                        x++;
                     });
                     
-                    //if any pdf's, change the link
-                    if($(description).find('a').length>0){
-                        $(description).find('a').each(function(i, obj){
-                            href = "";
-                            href = $(obj).attr('href');
-                            if(href.substr(href.length - 4)===".pdf" || href.substr(href.length - 4)===".PDF"){
-                                //so its a pdf, replace link (THIS ONLY WORKS WITH ANDROID)
-                                description = description.replace($(obj)[0].outerHTML, '<div id="pdf-link" rel="'+href+'" >'+$(obj).text()+'</div>');
-
-                            }
-                        });
-                    }
-                    else{
-                        href = "";
-                    }
                     
                     //if no source found, use school icon
                     if(src.length===0){

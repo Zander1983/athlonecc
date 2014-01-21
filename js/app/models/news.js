@@ -45,10 +45,9 @@ define(function (require) {
                     
                     pubDate = pubDate.substring(0, pubDate.length-12);
 
-
                     var x=0;
                     $(description).find('img').each(function(i, obj){
-     
+
                        if(x==0){
                             src = $(obj).attr('src');
                             if(src.indexOf('http') === -1){
@@ -66,22 +65,6 @@ define(function (require) {
                        }
                        x++;
                     });
-                    
-                    //if any pdf's, change the link
-                    if($(description).find('a').length>0){
-                        $(description).find('a').each(function(i, obj){
-                            href = "";
-                            href = $(obj).attr('href');
-                            if(href.substr(href.length - 4)===".pdf" || href.substr(href.length - 4)===".PDF"){
-                                //so its a pdf, replace link (THIS ONLY WORKS WITH ANDROID)
-                                description = description.replace($(obj)[0].outerHTML, '<div id="pdf-link" rel="'+href+'" >'+$(obj).text()+'</div>');
-
-                            }
-                        });
-                    }
-                    else{
-                        href = "";
-                    }
                     
                     //if no source found, use school icon
                     if(src.length===0){
