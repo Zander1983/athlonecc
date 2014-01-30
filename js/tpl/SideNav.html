@@ -7,7 +7,21 @@
             <li class="topcoat-list__item side-nav__list__item">
                 <a href="#news" class="side-nav__button nav-links">News</a>
             </li>
-        </ul>   
+            
+            
+            <li class="topcoat-list__item side-nav__list__item">
+                <a href="#articles/<%= project_title %>" class="side-nav__button nav-links">Messages
+                <% 
+                    if(message_count>0){
+                        print('<span id="message-count" class="topcoat-notification" >'+message_count+'</span>');
+                    }
+                    else{
+                        print('<span id="message-count" ></span>');
+                    }
+                %>
+                </a>
+            </li>
+        </ul>
   
         <h4 class="side-nav__header">People</h4>
         <div class="clearfix"></div>        
