@@ -7,36 +7,44 @@ define(function (require) {
         Backbone            = require('backbone'),
         tpl                 = require('text!tpl/Map.html'),
         side_nav                = require('text!tpl/SideNav.html'),
+        side_template = _.template(side_nav),
         template = _.template(tpl),
-        map, myLatlng, mapOptions, marker, test;
+        that;
 
 
     return Backbone.View.extend({
 
         initialize: function () {
-            
+            that = this;
             this.render();
             
         },
                 
         initMap: function () {
-            //53.424162,-7.920671
-             this.myLatlng = new google.maps.LatLng(53.424162,-7.920671);
-    
-             this.mapOptions = {
-                center: this.myLatlng,
-                zoom: 12,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-           
-              
-            this.map = new google.maps.Map(this.$el.find('#map-canvas')[0],
-                                          this.mapOptions);
-           
-             this.marker = new google.maps.Marker({
-                position: this.myLatlng,
-                map: this.map,
-                title: 'Christians Brothers College Cork'
+            
+            require(['async!https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'], function(){
+
+                    that.myLatlng = new google.maps.LatLng(53.424162,-7.920671);
+                    
+                    that.myLatlng = new google.maps.LatLng(53.424162,-7.920671);
+
+
+                    that.mapOptions = {
+                       center: that.myLatlng,
+                       zoom: 12,
+                       mapTypeId: google.maps.MapTypeId.ROADMAP
+                   };
+
+
+                   that.map = new google.maps.Map(that.$el.find('#map-canvas')[0],
+                                                 that.mapOptions);
+
+                    that.marker = new google.maps.Marker({
+                       position: that.myLatlng,
+                       map: that.map,
+                       title: 'Christians Brothers College Cork'
+                   });
+
             });
 
         },
@@ -44,7 +52,7 @@ define(function (require) {
 
         render: function () {
     
-            this.$el.html(template({side_nav:side_nav}));
+            this.$el.html(template({side_nav:side_template({message_count:this.options.message_count})}));
 
             this.initMap();      
            

@@ -4,6 +4,7 @@ define(function (require) {
 
     var $                   = require('jquery'),
         Backbone            = require('backbone'),
+        Moment              = require('moment'),
         id=1,
         xml,
         parsed = [], 

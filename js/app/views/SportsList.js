@@ -7,6 +7,7 @@ define(function (require) {
         Backbone            = require('backbone'),
         tpl                 = require('text!tpl/SportsList.html'),
         side_nav                = require('text!tpl/SideNav.html'),
+        side_template = _.template(side_nav),
         template = _.template(tpl);
 
     return Backbone.View.extend({
@@ -17,7 +18,7 @@ define(function (require) {
         },
 
         render: function () {
-            this.$el.html(template({side_nav:side_nav, sports:this.collection.toJSON()}));
+            this.$el.html(template({side_nav:side_template({message_count:this.options.message_count}), sports:this.collection.toJSON()}));
             return this;
         },
        
