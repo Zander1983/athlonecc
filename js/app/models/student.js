@@ -33,8 +33,6 @@ define(function (require) {
         
             parse: function (xml) {
 
-                console.log('in parse and xml is ');
-                console.log(xml);
               
                 $(xml).find('item').each(function (index) {
            
@@ -49,30 +47,31 @@ define(function (require) {
                     pubDate = pubDate.substring(0, pubDate.length-12);
 
 
-                    var x=0;
+                    //var x=0;
                     $(description).find('img').each(function(i, obj){
      
-                       if(x==0){
+                       //if(x==0){
                             src = $(obj).attr('src');
                             if(src.indexOf('http') === -1){
                                //therefore its a relative path
                                description = description.replace(src,"http://athlonecc.ie"+src);
                                src = "http://athlonecc.ie" + src;
                             }
-                       }
+                       //}
+                       /*
                        else{
                             other_src = $(obj).attr('src');
                             if(other_src.indexOf('http') === -1){
                                 //therefore its a relative path
                                 description = description.replace(other_src,"http://athlonecc.ie"+other_src);                         
                             }
-                       }
-                       x++;
+                       }*/
+                       //x++;
                     });
        
        
                     parsed.push({id:id, title: title, author:author, 
-                                description:description, pubDate:pubDate, src:src});
+                                description:description, pubDate:pubDate});
                    id++;
                 });
 

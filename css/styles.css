@@ -179,7 +179,7 @@ body.left-nav .topcoat-navigation-bar, body.left-nav .main-content {
     left: 0;
     padding-top:4rem;
     width:100%;
-    min-height:550px;
+    min-height:940px;
     transition: left 0.2s ease-out;
     -webkit-transition: left 0.2s ease-out;
     transform: translate3d(0, 0, 0);
@@ -188,6 +188,11 @@ body.left-nav .topcoat-navigation-bar, body.left-nav .main-content {
     -moz-box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.57);
     -webkit-box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.57);
     box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.57);*/
+}
+
+#inner-container-centered{
+    padding:1.5rem 1rem 0 1rem;
+    text-align:center;
 }
 
 

@@ -22,6 +22,7 @@ var app = {
      */
     registerDeviceWithServer: function(reg_id){
  
+ 
             var url = server_url+"/device_api/device";
             //var url = "http://localhost/schoolspace/device_api/device";
            
@@ -33,7 +34,6 @@ var app = {
                 headers :{device_id:standard_device_id,
                 api_key:standard_api_key},
                 success: function(data){
-                    //alert("success in registerDeviceWithServer and id is");
                     
                     var obj = jQuery.parseJSON(data);
                 
@@ -46,7 +46,7 @@ var app = {
                     app.updateRegId(device_id, api_key, reg_id);
                 },
                 error:   function(model, xhr, options){
-                    //alert('failed in registerDeviceWithServer');
+
                     // alert('in Error');
                     console.log('response is : ');
                     console.log(app.logObject(xhr));
@@ -88,6 +88,7 @@ var app = {
 
         var pushNotification = window.plugins.pushNotification;
         if (window.device.platform == 'android' || window.device.platform == 'Android') {
+    
             pushNotification.register(app.successHandler, app.errorHandler,{"senderID":project_number,"ecb":"app.onNotificationGCM"});                        
         }
         else{
@@ -135,6 +136,7 @@ var app = {
      */
     onNotificationGCM: function(e) {
       
+
         switch( e.event )
         {
         

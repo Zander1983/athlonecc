@@ -12,7 +12,6 @@ define(function (require) {
         href = "",
         text = "",
         pdf = "",
-        src = "img/crest.png",
         
         Parents = Backbone.Model.extend({  
 
@@ -84,8 +83,7 @@ define(function (require) {
                     }
              
      
-                    parsed.push({id:id, title: title, description:description, pubDate:pubDate,
-                                src:src});
+                    parsed.push({id:id, title: title, description:description, pubDate:pubDate});
                     title, description, pubDate, pdf, href, text = "";
                    id++;
                 });
