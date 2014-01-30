@@ -19,9 +19,6 @@ define(function (require) {
 
         render: function () {
     
-            console.log('in this.options.message_count and message_count is ');
-            console.log(this.options.message_count);
-    
             this.$el.html(template({side_nav:side_template({message_count:this.options.message_count}), news:this.collection.toJSON()}));
             return this;
         },

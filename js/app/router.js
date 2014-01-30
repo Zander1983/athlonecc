@@ -97,8 +97,8 @@ define(function (require) {
                     }
                     else{
                         //this is when testing in a browser
-                        //options.url = "http://localhost/schoolspace/cli/mountmercy2/www/scripts" + options.url
-                        options.url = "http://localhost/schoolspace/cli/mountmercy2/www/scripts" + options.url
+                        //options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
+                        options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
                     }
                 }
   
@@ -121,7 +121,7 @@ define(function (require) {
                 if(typeof(news)==='undefined' || news===null){
                     news = new model.NewsCollection();
                     news.fetch({
-                        full_url: false,
+                        full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
                             
