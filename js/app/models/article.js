@@ -10,12 +10,26 @@ define(function (require) {
 
             urlRoot: "/article",   
 
+        }), 
+        
+        ArticleCollection = Backbone.Collection.extend({
+
+            model: Article,
+            initialize: function (options) {
+                this.device_id = options.device_id;
+                this.project_title = options.project_title;
+            },
+            url: function(){
+                    return "/articles/"+this.device_id+'/'+this.project_title;
+                 },
+
+
         });
 
 
-
     return {
-        Article: Article
+        Article: Article,
+        ArticleCollection: ArticleCollection
     };
 
 });

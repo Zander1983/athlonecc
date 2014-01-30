@@ -2,16 +2,14 @@ define(function (require) {
 
     "use strict";
 
-    var $                   = require('jquery'),
-        Backbone            = require('backbone'),
+    var Backbone            = require('backbone'),
       
     
         Device = Backbone.Model.extend({  
 
-            urlRoot: "/device",   
+            urlRoot: "/device",           
 
         });
-
 
 
     return {

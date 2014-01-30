@@ -12,6 +12,7 @@ define(function (require) {
         staff,
         parents,
         sports,
+        articles,
         curriculum,
         extracurricular,
         student,
@@ -50,27 +51,47 @@ define(function (require) {
             "photo-item/:id": "getPhotoItem",
             "notification": "getNotification",
             "article/:id": "getArticle",
+            "articles/:project_title": "getArticles",
         },
         
         initialize: function() {   
+            
             that = this;
             that.body = $('body');
             
             this.bind( "route", this.routeChange);
+            
+            this.storage = window.localStorage;
 
-            $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {         
+            this.device_id = this.storage.getItem(project_title+'_device_id');
+            this.api_key = this.storage.getItem(project_title+'_api_key');
+            
+            if(typeof(this.device_id)!=='undefined' && this.device_id!==null){
+                //only update counter if we know device_id. the first time gets installed, 
+                //we wont be able to get device_id cos it can take some time to come back from registering
+                //with apple/google
+                this.updateMessageCounter();
+            }
+       
+
+            $.ajaxPrefilter( function( options, originalOptions, jqXHR ) { 
+                
+                if(options.pure_ajax==true){
+                    return;
+                }
 
                 if(options.api==true){
                     //172.16.22.68
                     //options.url = "http://localhost/schoolspace/device_api" + options.url;
                     
                     if(options.update_notification==true){
-                       options.url = "http://push.schoolspace.ie/device_api/update_notification" + options.url+"";                        
+                       //options.url = "http://localhost/schoolspace/device_api/update_notification" + options.url+"";   
+                       options.url = server_url+"/device_api/update_notification" + options.url+"";   
                     }
                     else{
-                        options.url = "http://push.schoolspace.ie/device_api" + options.url;                        
+                        //options.url = "http://localhost/schoolspace/device_api" + options.url;   
+                        options.url = server_url+"/device_api" + options.url;                        
                     }
-                    
                     
                 }
                 else{
@@ -79,12 +100,11 @@ define(function (require) {
                     }
                     else{
                         //this is when testing in a browser
-                        //options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
-                        options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
+                        //options.url = "http://localhost/schoolspace/cli/mountmercy2/www/scripts" + options.url
+                        options.url = "http://localhost/schoolspace/cli/mountmercy2/www/scripts" + options.url
                     }
                 }
   
-   
            });
 
         },
@@ -94,6 +114,7 @@ define(function (require) {
             $('html,body').scrollTop(0);
     
         },
+                 
 
       
         getNews: function (id) {
@@ -461,13 +482,9 @@ define(function (require) {
                 
                   if(typeof(deviceModel)==='undefined' || deviceModel===null){
 
-                        var storage = window.localStorage;
-                        var device_id = storage.getItem('athlonecc_device_id');
-                        var api_key = storage.getItem('athlonecc_api_key');
+                        deviceModel = new model.Device({id:that.device_id});
 
-                        deviceModel = new model.Device({id:device_id});
-
-                        if(typeof(device_id)==='undefined' || device_id===null || typeof(api_key)==='undefined' || api_key===null){
+                        if(typeof(that.device_id)==='undefined' || that.device_id===null || typeof(that.api_key)==='undefined' || that.api_key===null){
                             that.body.removeClass('left-nav');
                             alert('There was a problem with notifications, please contact the developer');
                             window.location.hash = "news";
@@ -475,18 +492,22 @@ define(function (require) {
                         else{
                             deviceModel.fetch({
                                 api: true,
-                                headers: {device_id:device_id,api_key:api_key},        
+                                headers: {device_id:that.device_id,api_key:that.api_key},        
                                 success: function (data) {
                                     that.body.removeClass('left-nav');
-                                    slider.slidePage(new Notification({model: data, storage:storage}).$el);                          
+                                    slider.slidePage(new Notification({model: data, storage:storage, 
+                                                                        message_count:that.message_count
+                                                                        }).$el);                          
                                 }
                             });
                         }
                     
                   }else{    
-                        console.log('in the else');
+      
                         that.body.removeClass('left-nav');
-                        slider.slidePage(new Notification({model: deviceModel, storage:storage}).$el);    
+                        slider.slidePage(new Notification({model: deviceModel, storage:storage, 
+                                                            message_count:that.message_count
+                                                            }).$el);    
                   }
 
        
@@ -496,25 +517,81 @@ define(function (require) {
         getArticle: function (id) {
              
             require(["app/models/article", "app/views/Article"], function (models, Article) {
-                
-                var storage = window.localStorage;
-                var device_id = storage.getItem('athlonecc_device_id');
-                var api_key = storage.getItem('athlonecc_api_key');
+                               
+                if(typeof(articles)==='undefined' || articles===null){
+
+                    var article = new models.Article({id: id});
+
+                    article.fetch({
+                        api: true,
+                        headers: {device_id:that.device_id,api_key:that.api_key},
+                        success: function (data) {
+                            var articleView = new Article({model: data, message_count:that.message_count});
+
+                            slider.slidePage(articleView.$el);
+
+                            $.when(articleView.saveView()).done(function(data){
+                                that.message_count = data.count;
+                            });
+          
+                            data.set('seen', '1');
+
+                        },
+                        error: function(){
+                            console.log('failed to fecth artcie'); 
+                        }
+                    });
+                    
+                }
+                else{
+                    var articleView = new Article({model: articles.get(id), 
+                                                   device_id:that.device_id,
+                                                   api_key:that.api_key,
+                                                   message_count:that.message_count
+                                                    });
+                    that.body.removeClass('left-nav');
+                    slider.slidePage(articleView.$el);
+
+                    $.when(articleView.saveView()).done(function(data){
+                        that.message_count = data.count;
+                    });
+
+                    articles.get(id).set('seen', '1');
+
+                }
+
+            });
+        },
+        
+        
+        getArticles: function (project_title) {
+            
+            require(["app/models/article", "app/views/ArticleList"], function (models, ArticleList) {
              
-                var article = new models.Article({id: id});
-                
-                article.fetch({
-                    api: true,
-                    headers: {device_id:device_id,api_key:api_key},
-                    success: function (data) {
-                        console.log('in the success, going to the Article view');
-                        slider.slidePage(new Article({model: data}).$el);
-                    },
-                    error: function(model, xhr, options){
-                        console.log('failed to fecth artcie, response is ');
-                        console.log(xhr.responseText);
-                    }
-                });
+                if(typeof(articles)==='undefined' || articles===null){
+                    
+                    articles = new models.ArticleCollection({device_id: that.device_id, project_title: project_title
+                                                            });
+
+                    articles.fetch({
+                        api: true,
+                        headers: {device_id:that.device_id,api_key:that.api_key},
+                        success: function (collection) {
+                            that.body.removeClass('left-nav');
+                            slider.slidePage(new ArticleList({collection: collection,message_count:that.message_count}).$el);
+                        }, 
+                        error: function(){
+                            console.log('failed to fecth artcie');
+                        }
+                    }); 
+
+                }
+                else{
+                    that.body.removeClass('left-nav');
+                    slider.slidePage(new ArticleList({collection: articles,message_count:that.message_count}).$el);
+                }
+  
+
             });
         },
 

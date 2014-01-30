@@ -2,16 +2,13 @@ define(function (require) {
 
     "use strict";
 
-    var $                   = require('jquery'),
-        _                   = require('underscore'),
+    var _                   = require('underscore'),
         Backbone            = require('backbone'),
-        device_model        = require('app/models/device'),
-        notification_model  = require('app/models/notification'),
         tpl                 = require('text!tpl/Notification.html'),
         side_nav            = require('text!tpl/SideNav.html'),
+        side_template = _.template(side_nav),
         template            = _.template(tpl),
-        that,
-        notification;
+        that;
 
     return Backbone.View.extend({
 
@@ -27,7 +24,7 @@ define(function (require) {
 
         render: function (options) {
          
-            this.$el.html(template({side_nav:side_nav, 
+            this.$el.html(template({side_nav:side_template({message_count:this.options.message_count}), 
                                     notification:this.model.get('notification')
                                     }));
             return this;
@@ -57,12 +54,8 @@ define(function (require) {
                                     api:true,
                                     update_notification:true,
                                     headers: {device_id:this.model.id,
-                                    api_key:that.storage.getItem("athlonecc_api_key")},
+                                    api_key:that.storage.getItem(project_title+"_api_key")},
                                     success: function() {
-                                            //alert('its updated');
-                                            //that.storage.removeItem('athlonecc_device_id');
-                                            //that.storage.removeItem('athlonecc_api_key');
-                                            //that.deviceModel.unset('id');
                                         },
                                         error:   function(model, xhr, options){
                                            //alert('Error setting to 1')
@@ -92,13 +85,9 @@ define(function (require) {
                                         api:true,
                                         update_notification:true,
                                         headers: {device_id:this.model.id,
-                                        api_key:that.storage.getItem("athlonecc_api_key")},
+                                        api_key:that.storage.getItem(project_title+"_api_key")},
                                         success: function(data) {
                                                 
-                                                //alert('its updated');
-                                                //that.storage.removeItem('athlonecc_device_id');
-                                                //that.storage.removeItem('athlonecc_api_key');
-                                                //that.deviceModel.unset('id');
                                             },
                                         error:   function(model, xhr, options){
                                            //alert('Error setting to 0')
