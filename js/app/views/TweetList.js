@@ -2,8 +2,7 @@ define(function (require) {
 
     "use strict";
 
-    var $                   = require('jquery'),
-        _                   = require('underscore'),
+    var _                   = require('underscore'),
         Backbone            = require('backbone'),
         tpl                 = require('text!tpl/TweetList.html'),
         UsefulFuncs         = require('app/utils/useful_func'),

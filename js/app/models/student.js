@@ -2,10 +2,8 @@ define(function (require) {
 
     "use strict";
 
-    var $                   = require('jquery'),
-        Backbone            = require('backbone'),
+    var Backbone            = require('backbone'),
         id=1,
-        xml,
         parsed = [], 
         title = "", 
         description = "", 
@@ -13,8 +11,7 @@ define(function (require) {
         pubDate = "", 
         src="",
         other_src="",
-        img="",
-        href, 
+ 
         
         Student = Backbone.Model.extend({  
 

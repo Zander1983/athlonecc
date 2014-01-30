@@ -2,8 +2,7 @@ define(function (require) {
 
     "use strict";
 
-    var $                   = require('jquery'),
-        _                   = require('underscore'),
+    var _                   = require('underscore'),
         Backbone            = require('backbone'),
         tpl                 = require('text!tpl/NewsList.html'),
         side_nav                = require('text!tpl/SideNav.html'),
@@ -19,6 +18,10 @@ define(function (require) {
         },
 
         render: function () {
+    
+            console.log('in this.options.message_count and message_count is ');
+            console.log(this.options.message_count);
+    
             this.$el.html(template({side_nav:side_template({message_count:this.options.message_count}), news:this.collection.toJSON()}));
             return this;
         },

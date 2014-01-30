@@ -2,11 +2,8 @@ define(function (require) {
 
     "use strict";
 
-    var $           = require('jquery'),
-        Backbone    = require('backbone'),
+    var Backbone    = require('backbone'),
         PageSlider  = require('app/utils/pageslider'),
-        HomeView    = require('app/views/Home'),
-
         slider = new PageSlider($('body')),
         news,
         staff,
@@ -124,9 +121,12 @@ define(function (require) {
                 if(typeof(news)==='undefined' || news===null){
                     news = new model.NewsCollection();
                     news.fetch({
-                        full_url: true,
+                        full_url: false,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
+                            
+                            console.log('got the collection');
+                            
                             slider.slidePage(new NewsList({collection: collection, message_count:that.message_count}).$el);
                         },
                         error: function(){

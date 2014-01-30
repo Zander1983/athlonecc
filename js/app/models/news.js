@@ -2,8 +2,7 @@ define(function (require) {
 
     "use strict";
 
-    var $                   = require('jquery'),
-        Backbone            = require('backbone'),
+    var Backbone            = require('backbone'),
         id=1,
         xml,
         parsed = [], 
@@ -21,18 +20,21 @@ define(function (require) {
         NewsCollection = Backbone.Collection.extend({
 
             model: News,
-            url: 'http://athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=1&format=raw',
+           // url: 'http://athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=1&format=raw',
             
             //This is used so I can test on a browser. On a device, use the direct link
-          
-            /*
+         
             url: function(){
                     return "/school-proxy.php?type=news";
-                 },*/
+                 },
             
         
             parse: function (data) {
+
+                console.log('in news parse');
+            
                 xml = data;
+
 
               
                 $(xml).find('item').each(function (index) {
