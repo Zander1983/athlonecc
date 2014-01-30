@@ -5,6 +5,7 @@ define(function (require) {
     var Backbone    = require('backbone'),
         PageSlider  = require('app/utils/pageslider'),
         slider = new PageSlider($('body')),
+        Useful              = require('app/utils/useful_func'),
         news,
         staff,
         parents,
@@ -96,6 +97,8 @@ define(function (require) {
    
                     }
                     else{
+                        console.log('in correct else and options.url is ');
+                        console.log(options.url);
                         //this is when testing in a browser
                         //options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
                         options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url

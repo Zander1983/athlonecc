@@ -1,7 +1,8 @@
 define(function (require) {
 
     "use strict";
-    
+
+ 
     var UsefulFuncs = {};
 
    
@@ -56,6 +57,27 @@ define(function (require) {
     UsefulFuncs.replaceURLWithHTMLLinks = function (text) {
             var exp = /(\b(www\.|http\:\/\/)\S+\b)/ig;
             return text.replace(exp,"<a href='$1'>$1</a>"); 
+    };
+    
+    UsefulFuncs.updateCountEl = function (count) {
+          
+            var el = $('#message-count');
+        
+            if(count>0){
+         
+                el.html(count);
+                if(!el.hasClass('topcoat-notification')){
+                    el.addClass('topcoat-notification');
+                }
+         
+            }
+            else{
+          
+                //so its 0, remove class and empty html
+                el.removeClass('topcoat-notification');
+                el.empty();
+            }
+
     };
     
     return UsefulFuncs;

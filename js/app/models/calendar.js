@@ -76,7 +76,7 @@ define(function (require) {
                     
                     var dateObj = new Date(startDate);
                  
-                    month = moment.monthsShort('-MMM-', dateObj.getMonth());
+                    month = moment(startDate).format("MMM");
                     date = dateObj.getDate();
                     
                     //convert to nice time

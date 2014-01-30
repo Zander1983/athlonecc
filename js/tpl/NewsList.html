@@ -17,7 +17,7 @@
 
 <div class="main-content">
     <ul class="topcoat-list list" id="news-list">
-    <% _.every(news, function(item) { %>
+    <% _.each(news, function(item) { %>
     <li class="topcoat-list__item" data-id="<%= item.id %>">
             <a href="#news-item/<%= item.id %>">
 
@@ -29,10 +29,6 @@
             </a>
         </li>
     <%
-        if(item.id==10){
-            return false;
-        }
-        return true;
     }); %>
     </ul>
 
