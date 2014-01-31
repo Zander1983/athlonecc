@@ -32,6 +32,7 @@ define(function (require) {
             
         
             parse: function (data) {
+
                 xml = data;
 
               

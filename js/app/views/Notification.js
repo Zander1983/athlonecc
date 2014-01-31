@@ -14,7 +14,7 @@ define(function (require) {
 
         initialize: function (options) {
             
-            this.storage = options.storage;
+            this.storage = window.localStorage;;
             this.deviceModel = this.model;
             
             that = this;
