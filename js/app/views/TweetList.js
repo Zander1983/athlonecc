@@ -19,6 +19,7 @@ define(function (require) {
         },
 
         render: function (options) {
+            
             this.$el.html(template({tweets: this.collection.toJSON(), 
                                     UsefulFuncs:UsefulFuncs, 
                                     side_nav:side_template({message_count:this.options.message_count})}));

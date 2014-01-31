@@ -32,10 +32,7 @@ define(function (require) {
         
             parse: function (data) {
 
-                console.log('in news parse');
-            
                 xml = data;
-
 
               
                 $(xml).find('item').each(function (index) {

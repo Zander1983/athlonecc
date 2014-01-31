@@ -16,6 +16,16 @@ elseif ($type=='parents') {
     $xml = file_get_contents('http://www.athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=7&format=raw');
     
 }
+elseif ($type=='prospectus') { 
+       
+    $xml = file_get_contents('http://www.athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=16&format=raw');
+    
+}
+elseif ($type=='schoolcalendar') { 
+       
+    $xml = file_get_contents('http://www.athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=17&format=raw');
+    
+}
 elseif($type=="sports"){
 
     $xml = file_get_contents('http://www.athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=11&format=raw');    

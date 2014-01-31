@@ -43,7 +43,7 @@ echo $twitter->buildOauth($url, $requestMethod)
 
 
 
-$screen_name = $_GET['screen_name'];
+$screen_name = 'CCAthlone';
 
 if(!isset($screen_name)){
     die();

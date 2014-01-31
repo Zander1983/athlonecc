@@ -21,6 +21,7 @@ define(function (require) {
 
             model: Photo,
             
+            
             url: function(){
                     var link = 'http://api.flickr.com/services/rest/?';
                     link += '&method=flickr.photosets.getPhotos';

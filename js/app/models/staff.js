@@ -29,8 +29,8 @@ define(function (require) {
             /*
             url: function(){
                     return "/school-proxy.php?type=staff";
-                 },*/
-            
+                 },
+            */
         
             parse: function (data) {
                 xml = data;

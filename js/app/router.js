@@ -9,10 +9,12 @@ define(function (require) {
         news,
         staff,
         parents,
+        prospectus,
         sports,
         articles,
         curriculum,
         extracurricular,
+        schoolcalendar,
         student,
         calendar,
         albums,
@@ -50,6 +52,10 @@ define(function (require) {
             "notification": "getNotification",
             "article/:id": "getArticle",
             "articles/:project_title": "getArticles",
+            "prospectus": "getProspectus",
+            "prospectus-item/:id": "getProspectusItem",
+            "school-calendar": "getSchoolCalendar",
+            "school-calendar-item/:id": "getSchoolCalendarItem",
         },
         
         initialize: function() {   
@@ -63,6 +69,9 @@ define(function (require) {
 
             this.device_id = this.storage.getItem(project_title+'_device_id');
             this.api_key = this.storage.getItem(project_title+'_api_key');
+            
+            console.log('this.device_id is ');
+            console.log(this.device_id);
             
             if(typeof(this.device_id)!=='undefined' && this.device_id!==null){
                 //only update counter if we know device_id. the first time gets installed, 
@@ -83,12 +92,12 @@ define(function (require) {
                     //options.url = "http://localhost/schoolspace/device_api" + options.url;
                     
                     if(options.update_notification==true){
-                       //options.url = "http://localhost/schoolspace/device_api/update_notification" + options.url+"";   
-                       options.url = server_url+"/device_api/update_notification" + options.url+"";   
+                       options.url = "http://localhost/schoolspace/device_api/update_notification" + options.url+"";   
+                       //options.url = server_url+"/device_api/update_notification" + options.url+"";   
                     }
                     else{
-                        //options.url = "http://localhost/schoolspace/device_api" + options.url;   
-                        options.url = server_url+"/device_api" + options.url;                        
+                        options.url = "http://localhost/schoolspace/device_api" + options.url;   
+                        //options.url = server_url+"/device_api" + options.url;                        
                     }
                     
                 }
@@ -97,8 +106,6 @@ define(function (require) {
    
                     }
                     else{
-                        console.log('in correct else and options.url is ');
-                        console.log(options.url);
                         //this is when testing in a browser
                         //options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
                         options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
@@ -127,8 +134,6 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            
-                            console.log('got the collection');
                             
                             slider.slidePage(new NewsList({collection: collection, message_count:that.message_count}).$el);
                         },
@@ -216,7 +221,73 @@ define(function (require) {
                                  
             });
         },
+             
+        //getProspectus
+        getProspectus: function (id) {
+            //body.removeClass('left-nav');
+            require(["app/models/prospectus", "app/views/ProspectusList"], function (model, ProspectusList) {
+       
+                if(typeof(prospectus)==='undefined' || prospectus===null){
+                    prospectus = new model.ProspectusCollection();
+                    
+                    prospectus.fetch({
+                        full_url: true,
+                        success: function (collection) {
+                            that.body.removeClass('left-nav');
+                            slider.slidePage(new ProspectusList({collection: collection, message_count:that.message_count}).$el);
+                        }
+                    });
+                }
+                else{
+                    that.body.removeClass('left-nav');
+                    slider.slidePage(new ProspectusList({collection: prospectus, message_count:that.message_count}).$el);
+                }
+                            
+            });
+        },
+        
+        getProspectusItem: function (id) {
+            //body.removeClass('left-nav');
+            require(["app/views/ProspectusItem"], function (ProspectusItem) {
+                 that.body.removeClass('left-nav');   
+                 slider.slidePage(new ProspectusItem({model: prospectus.get(id), message_count:that.message_count}).$el);
+                                 
+            });
+        },
                 
+                
+        //getSchoolCalendar
+        getSchoolCalendar: function (id) {
+            //body.removeClass('left-nav');
+            require(["app/models/schoolcalendar", "app/views/SchoolCalendarList"], function (model, SchoolCalendarList) {
+       
+                if(typeof(schoolcalendar)==='undefined' || schoolcalendar===null){
+                    schoolcalendar = new model.SchoolCalendarCollection();
+                    
+                    schoolcalendar.fetch({
+                        full_url: true,
+                        success: function (collection) {
+                            that.body.removeClass('left-nav');
+                            slider.slidePage(new SchoolCalendarList({collection: collection, message_count:that.message_count}).$el);
+                        }
+                    });
+                }
+                else{
+                    that.body.removeClass('left-nav');
+                    slider.slidePage(new SchoolCalendarList({collection: schoolcalendar, message_count:that.message_count}).$el);
+                }
+                            
+            });
+        },
+        
+        getSchoolCalendarItem: function (id) {
+            //body.removeClass('left-nav');
+            require(["app/views/SchoolCalendarItem"], function (SchoolCalendarItem) {
+                 that.body.removeClass('left-nav');   
+                 slider.slidePage(new SchoolCalendarItem({model: schoolcalendar.get(id), message_count:that.message_count}).$el);
+                                 
+            });
+        },
                 
         getSports: function (id) {
             //body.removeClass('left-nav');
@@ -352,16 +423,23 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/models/tweet", "app/views/TweetList"], function (models, TweetList) {
 
+                
                 if(typeof(tweets)==='undefined' || tweets===null){
                     tweets = new models.TweetCollection(); 
-                    
+          
                     tweets.fetch({
-                        full_url: true,
+                        api: true,
+                        headers: {device_id:that.device_id,api_key:that.api_key},
                         success: function (collection) {
                             that.body.removeClass('left-nav');
-                            slider.slidePage(new TweetList({collection: collection, message_count:that.message_count}).$el);
+                            slider.slidePage(new TweetList({collection: collection,message_count:that.message_count}).$el);
+                        }, 
+                        error: function(){
+                            console.log('failed to get tweets');
                         }
-                    });
+                    }); 
+                    
+                    
                 }
                 else{
                     that.body.removeClass('left-nav');
@@ -450,7 +528,7 @@ define(function (require) {
             //body.removeClass('left-nav');
             require(["app/models/photo", "app/views/PhotoList"], function (model, PhotoList) {
        
-                if(typeof(photos)==='undefined' || photos===null){
+
                     photos = new model.PhotoCollection([], {photoset_id:id, message_count:that.message_count});
                     
                     photos.fetch({
@@ -460,11 +538,6 @@ define(function (require) {
                             slider.slidePage(new PhotoList({collection: collection, message_count:that.message_count}).$el);
                         }
                     });
-                }
-                else{ 
-                    that.body.removeClass('left-nav');
-                    slider.slidePage(new PhotoList({collection: photos, message_count:that.message_count}).$el);
-                }
                             
             });
         },
@@ -485,6 +558,8 @@ define(function (require) {
                 
                   if(typeof(deviceModel)==='undefined' || deviceModel===null){
 
+                        console.log('in the if');
+
                         deviceModel = new model.Device({id:that.device_id});
 
                         if(typeof(that.device_id)==='undefined' || that.device_id===null || typeof(that.api_key)==='undefined' || that.api_key===null){
@@ -493,6 +568,7 @@ define(function (require) {
                             window.location.hash = "news";
                         }
                         else{
+                            console.log('fetching...');
                             deviceModel.fetch({
                                 api: true,
                                 headers: {device_id:that.device_id,api_key:that.api_key},        
@@ -506,7 +582,7 @@ define(function (require) {
                         }
                     
                   }else{    
-      
+                        console.log('in the else');
                         that.body.removeClass('left-nav');
                         slider.slidePage(new Notification({model: deviceModel, storage:storage, 
                                                             message_count:that.message_count

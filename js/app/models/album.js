@@ -21,7 +21,6 @@ define(function (require) {
 
             model: Album,
             
-            
             url: function(){
                 
                     var link = "http://api.flickr.com/services/rest/?";

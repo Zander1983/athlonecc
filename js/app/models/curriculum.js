@@ -24,7 +24,7 @@ define(function (require) {
             url: 'http://www.athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=12&format=raw',
             
             //This is used so I can test on a browser. On a device, use the direct link
-          
+        
           /*
             url: function(){
                     return "/school-proxy.php?type=curriculum";

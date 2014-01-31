@@ -11,7 +11,7 @@ define(function (require) {
             model: Tweet,
            
             url: function(){
-                    return "/twitter-proxy.php?screen_name=CCAthlone";
+                    return "/twitter/"+twitter_handle;
                  },
         });
 
