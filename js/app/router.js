@@ -7,6 +7,7 @@ define(function (require) {
         slider = new PageSlider($('body')),
         Useful              = require('app/utils/useful_func'),
         news,
+        newsflash,
         staff,
         parents,
         prospectus,
@@ -29,6 +30,8 @@ define(function (require) {
             "": "getNews",
             "news": "getNews",
             "news-item/:id": "getNewsItem",
+            "news-flash": "getNewsFlash",
+            "newsflash-item/:id": "getNewsFlashItem",
             "staff": "getStaff",
             "staff-item/:id": "getStaffItem",
             "parents": "getParents",
@@ -69,10 +72,7 @@ define(function (require) {
 
             this.device_id = this.storage.getItem(project_title+'_device_id');
             this.api_key = this.storage.getItem(project_title+'_api_key');
-            
-            console.log('this.device_id is ');
-            console.log(this.device_id);
-            
+ 
             if(typeof(this.device_id)!=='undefined' && this.device_id!==null){
                 //only update counter if we know device_id. the first time gets installed, 
                 //we wont be able to get device_id cos it can take some time to come back from registering
@@ -134,8 +134,7 @@ define(function (require) {
                     news.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new NewsList({collection: collection, message_count:that.message_count}).$el);
                         },
                         error: function(){
@@ -154,12 +153,47 @@ define(function (require) {
         getNewsItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/NewsItem"], function (NewsItem) {
-                 that.body.removeClass('left-nav');  
-                 $('html,body').scrollTop(0);
+                 Useful.correctView(that.body);
                  slider.slidePage(new NewsItem({model: news.get(id), message_count:that.message_count}).$el);
                            
             });
         },
+                
+                
+        getNewsFlash: function (id) {
+
+            require(["app/models/newsflash", "app/views/NewsFlashList"], function (model, NewsFlashList) {
+       
+                if(typeof(newsflash)==='undefined' || newsflash===null){
+                    newsflash = new model.NewsFlashCollection();
+                    newsflash.fetch({
+                        full_url: true,
+                        success: function (collection) {
+                            Useful.correctView(that.body);
+                            slider.slidePage(new NewsFlashList({collection: collection, message_count:that.message_count}).$el);
+                        },
+                        error: function(){
+                                console.log('there was an error');
+                        }
+                    });
+                }
+                else{ 
+                    that.body.removeClass('left-nav');
+                    slider.slidePage(new NewsFlashList({collection: newsflash}).$el);
+                }
+                            
+            });
+        },
+        
+        getNewsFlashItem: function (id) {
+            //body.removeClass('left-nav');
+            require(["app/views/NewsFlashItem"], function (NewsFlashItem) {
+                 Useful.correctView(that.body);
+                 slider.slidePage(new NewsFlashItem({model: newsflash.get(id), message_count:that.message_count}).$el);
+                           
+            });
+        },
+                
 
         getStaff: function (id) {
             //body.removeClass('left-nav');
@@ -171,15 +205,13 @@ define(function (require) {
                     staff.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new StaffList({collection: collection, message_count:that.message_count}).$el);
                         }
                     });
                 }
                 else{
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new StaffList({collection: staff, message_count:that.message_count}).$el);
                 }
                             
@@ -189,7 +221,7 @@ define(function (require) {
         getStaffItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/StaffItem"], function (StaffItem) {
-                $('html,body').scrollTop(0);
+                Useful.correctView(that.body);
                  slider.slidePage(new StaffItem({model: staff.get(id), message_count:that.message_count}).$el);
                                  
             });
@@ -205,15 +237,13 @@ define(function (require) {
                     parents.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new ParentsList({collection: collection, message_count:that.message_count}).$el);
                         }
                     });
                 }
                 else{
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new ParentsList({collection: parents, message_count:that.message_count}).$el);
                 }
                             
@@ -223,8 +253,7 @@ define(function (require) {
         getParentsItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/ParentsItem"], function (ParentsItem) {
-                 that.body.removeClass('left-nav');   
-                 $('html,body').scrollTop(0);
+                 Useful.correctView(that.body);
                  slider.slidePage(new ParentsItem({model: parents.get(id), message_count:that.message_count}).$el);
                                  
             });
@@ -241,15 +270,13 @@ define(function (require) {
                     prospectus.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new ProspectusList({collection: collection, message_count:that.message_count}).$el);
                         }
                     });
                 }
                 else{
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new ProspectusList({collection: prospectus, message_count:that.message_count}).$el);
                 }
                             
@@ -259,8 +286,7 @@ define(function (require) {
         getProspectusItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/ProspectusItem"], function (ProspectusItem) {
-                 that.body.removeClass('left-nav');   
-                 $('html,body').scrollTop(0);
+                 Useful.correctView(that.body);
                  slider.slidePage(new ProspectusItem({model: prospectus.get(id), message_count:that.message_count}).$el);
                                  
             });
@@ -278,15 +304,13 @@ define(function (require) {
                     schoolcalendar.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new SchoolCalendarList({collection: collection, message_count:that.message_count}).$el);
                         }
                     });
                 }
                 else{
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new SchoolCalendarList({collection: schoolcalendar, message_count:that.message_count}).$el);
                 }
                             
@@ -296,8 +320,7 @@ define(function (require) {
         getSchoolCalendarItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/SchoolCalendarItem"], function (SchoolCalendarItem) {
-                 that.body.removeClass('left-nav');   
-                 $('html,body').scrollTop(0);
+                 Useful.correctView(that.body);
                  slider.slidePage(new SchoolCalendarItem({model: schoolcalendar.get(id), message_count:that.message_count}).$el);
                                  
             });
@@ -313,16 +336,14 @@ define(function (require) {
                     sports.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new SportsList({collection: collection, message_count:that.message_count}).$el);
                            // $("html").animate({ scrollTop: 0 }, 'slow');
                         } 
                     });
                 }
                 else{
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new SportsList({collection: sports, message_count:that.message_count}).$el);
                 }
                             
@@ -332,8 +353,7 @@ define(function (require) {
         getSportsItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/SportsItem"], function (SportsItem) {
-                 that.body.removeClass('left-nav');
-                 $('html,body').scrollTop(0);
+                 Useful.correctView(that.body);
                  slider.slidePage(new SportsItem({model: sports.get(id), message_count:that.message_count}).$el);
                                  
             });
@@ -349,15 +369,13 @@ define(function (require) {
                     curriculum.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new CurriculumList({collection: collection, message_count:that.message_count}).$el);
                         }
                     });
                 }
                 else{
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new CurriculumList({collection: curriculum, message_count:that.message_count}).$el);
                 }
                             
@@ -367,8 +385,7 @@ define(function (require) {
         getCurriculumItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/CurriculumItem"], function (CurriculumItem) {
-                 that.body.removeClass('left-nav');   
-                 $('html,body').scrollTop(0);
+                 Useful.correctView(that.body);
                  slider.slidePage(new CurriculumItem({model: curriculum.get(id), message_count:that.message_count}).$el);
                                  
             });
@@ -384,15 +401,13 @@ define(function (require) {
                     extracurricular.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new ExtraCurricularList({collection: collection, message_count:that.message_count}).$el);
                         }
                     });
                 }
                 else{
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new ExtraCurricularList({collection: extracurricular, message_count:that.message_count}).$el);
                 }
                             
@@ -402,8 +417,7 @@ define(function (require) {
         getExtraCurricularItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/ExtraCurricularItem"], function (ExtraCurricularItem) {
-                 that.body.removeClass('left-nav');
-                 $('html,body').scrollTop(0);
+                 Useful.correctView(that.body);
                  slider.slidePage(new ExtraCurricularItem({model: extracurricular.get(id), message_count:that.message_count}).$el);
                                  
             });
@@ -419,14 +433,13 @@ define(function (require) {
                     student.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new StudentList({collection: collection, message_count:that.message_count}).$el);
                         }
                     });
                 }
                 else{
-                    that.body.removeClass('left-nav');
+                    Useful.correctView(that.body);
                     slider.slidePage(new StudentList({collection: student, message_count:that.message_count}).$el);
                 }
                             
@@ -436,8 +449,7 @@ define(function (require) {
         getStudentItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/StudentItem"], function (StudentItem) {
-                 that.body.removeClass('left-nav');
-                 $('html,body').scrollTop(0);
+                 Useful.correctView(that.body);
                  slider.slidePage(new StudentItem({model: student.get(id), message_count:that.message_count}).$el);
                                  
             });
@@ -457,8 +469,7 @@ define(function (require) {
                         api: true,
                         headers: {device_id:that.device_id,api_key:that.api_key},
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new TweetList({collection: collection,message_count:that.message_count}).$el);
                         }, 
                         error: function(){
@@ -469,8 +480,7 @@ define(function (require) {
                     
                 }
                 else{
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new TweetList({collection: tweets, message_count:that.message_count}).$el);
                 }
                                  
@@ -488,15 +498,13 @@ define(function (require) {
                     calendar.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new CalendarList({collection: collection, message_count:that.message_count}).$el);                          
                         }
                     });
                 }
                 else{
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new CalendarList({collection: calendar, message_count:that.message_count}).$el);
                 }
                             
@@ -506,8 +514,7 @@ define(function (require) {
                 
         getCalendarItem: function (id) {
             require(["app/views/CalendarItem"], function (CalendarItem) {
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new CalendarItem({model: calendar.get(id), message_count:that.message_count}).$el);
                                  
             });
@@ -516,8 +523,7 @@ define(function (require) {
         getContact: function () {
             
             require(["app/views/Contact"], function (Contact) { 
-                that.body.removeClass('left-nav');
-                $('html,body').scrollTop(0);
+                Useful.correctView(that.body);
                 slider.slidePage(new Contact({message_count:that.message_count}).$el);               
              });
         },
@@ -527,8 +533,7 @@ define(function (require) {
             require(["app/views/Map"], function (Map) {    
                 var mapView = new Map({message_count:that.message_count});
                 //mapView.delegateEvents();
-                that.body.removeClass('left-nav');
-                $('html,body').scrollTop(0);
+                Useful.correctView(that.body);
                 slider.slidePage(mapView.$el);
                 mapView.render();
                 //google.maps.event.trigger(mapView.map, 'resize');
@@ -545,14 +550,13 @@ define(function (require) {
                     albums.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new AlbumList({collection: collection, message_count:that.message_count}).$el);
                         }
                     });
                 }
                 else{ 
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new AlbumList({collection: albums, message_count:that.message_count}).$el);
                 }
                             
@@ -569,8 +573,7 @@ define(function (require) {
                     photos.fetch({
                         full_url: true,
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new PhotoList({collection: collection, message_count:that.message_count}).$el);
                         }
                     });
@@ -581,8 +584,7 @@ define(function (require) {
         getPhotoItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/PhotoItem"], function (PhotoItem) {
-                 that.body.removeClass('left-nav');
-                 $('html,body').scrollTop(0);
+                 Useful.correctView(that.body);
                  slider.slidePage(new PhotoItem({model: photos.get(id), message_count:that.message_count}).$el);
                            
             });
@@ -600,7 +602,7 @@ define(function (require) {
                         deviceModel = new model.Device({id:that.device_id});
 
                         if(typeof(that.device_id)==='undefined' || that.device_id===null || typeof(that.api_key)==='undefined' || that.api_key===null){
-                            that.body.removeClass('left-nav');
+                            Useful.correctView(that.body);
                             alert('There was a problem with notifications, please contact the developer');
                             window.location.hash = "news";
                         }
@@ -610,8 +612,7 @@ define(function (require) {
                                 api: true,
                                 headers: {device_id:that.device_id,api_key:that.api_key},        
                                 success: function (data) {
-                                    that.body.removeClass('left-nav');
-                                    $('html,body').scrollTop(0);
+                                    Useful.correctView(that.body);
                                     slider.slidePage(new Notification({model: data, 
                                                                         message_count:that.message_count
                                                                         }).$el);                          
@@ -620,9 +621,7 @@ define(function (require) {
                         }
                     
                   }else{    
-                        console.log('in the else');
-                        that.body.removeClass('left-nav');
-                        $('html,body').scrollTop(0);
+                        Useful.correctView(that.body);
                         slider.slidePage(new Notification({model: deviceModel, 
                                                             message_count:that.message_count
                                                             }).$el);    
@@ -646,8 +645,7 @@ define(function (require) {
                         success: function (data) {
                             var articleView = new Article({model: data, message_count:that.message_count});
 
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(articleView.$el);
 
                             $.when(articleView.saveView()).done(function(data){
@@ -669,8 +667,8 @@ define(function (require) {
                                                    api_key:that.api_key,
                                                    message_count:that.message_count
                                                     });
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                                                    
+                    Useful.correctView(that.body);
                     slider.slidePage(articleView.$el);
 
                     $.when(articleView.saveView()).done(function(data){
@@ -698,8 +696,7 @@ define(function (require) {
                         api: true,
                         headers: {device_id:that.device_id,api_key:that.api_key},
                         success: function (collection) {
-                            that.body.removeClass('left-nav');
-                            $('html,body').scrollTop(0);
+                            Useful.correctView(that.body);
                             slider.slidePage(new ArticleList({collection: collection,message_count:that.message_count}).$el);
                         }, 
                         error: function(){
@@ -709,8 +706,7 @@ define(function (require) {
 
                 }
                 else{
-                    that.body.removeClass('left-nav');
-                    $('html,body').scrollTop(0);
+                    Useful.correctView(that.body);
                     slider.slidePage(new ArticleList({collection: articles,message_count:that.message_count}).$el);
                 }
   

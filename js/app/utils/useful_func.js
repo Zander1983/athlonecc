@@ -80,6 +80,12 @@ define(function (require) {
 
     };
     
+    UsefulFuncs.correctView = function(body){
+            
+           body.removeClass('left-nav');
+           body.scrollTop(0);
+    };
+    
     return UsefulFuncs;
 
     

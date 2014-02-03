@@ -8,6 +8,9 @@ $type = $_GET['type'];
 if($type=='news'){
     $xml = file_get_contents('http://athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=1&format=raw');    
 }
+elseif ($type=='newsflash') { 
+    $xml = file_get_contents('http://www.athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=15&format=raw');
+}
 elseif ($type=='staff') { 
     $xml = file_get_contents('http://athlonecc.ie/index.php?option=com_ninjarsssyndicator&feed_id=9&format=raw');
 }
