@@ -597,8 +597,6 @@ define(function (require) {
                 
                   if(typeof(deviceModel)==='undefined' || deviceModel===null){
 
-                        console.log('in the if');
-
                         deviceModel = new model.Device({id:that.device_id});
 
                         if(typeof(that.device_id)==='undefined' || that.device_id===null || typeof(that.api_key)==='undefined' || that.api_key===null){
@@ -606,8 +604,7 @@ define(function (require) {
                             alert('There was a problem with notifications, please contact the developer');
                             window.location.hash = "news";
                         }
-                        else{
-                            console.log('fetching...');
+                        else{              
                             deviceModel.fetch({
                                 api: true,
                                 headers: {device_id:that.device_id,api_key:that.api_key},        

@@ -14,7 +14,7 @@ define(function (require) {
 
         initialize: function (options) {
             
-            this.storage = window.localStorage;;
+            this.storage = window.localStorage;
             this.deviceModel = this.model;
             
             that = this;
@@ -62,9 +62,7 @@ define(function (require) {
                                            //console.log(xhr.responseText);
                                         },
                                     });
-                    
-                        console.log("this.model.get('notification') is ");
-                        console.log(this.model.get('notification'));
+            
 
             }
             else{
@@ -94,8 +92,7 @@ define(function (require) {
                                            //console.log(xhr.responseText);
                                         },
                                         });
-                            console.log("this.model.get('notification') is ");
-                            console.log(this.model.get('notification'));
+                
                     }
                 
             }
