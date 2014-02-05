@@ -13,12 +13,9 @@ define(function (require) {
  
      function clickAway(event) {
     
-        console.log('in click away back buttong and setting css, main content is ');
-        console.log(that.body.find('.main-content'));
-        that.body.find('.main-content').css('min-height', '1150px');
-    
-       document.removeEventListener('backbutton', clickAway);
-        
+        that.body.find('.main-content').css('min-height', '1150px'); 
+        document.removeEventListener('backbutton', clickAway);
+       
     }
 
 
@@ -38,9 +35,10 @@ define(function (require) {
                 
         initMap: function () {
             
-           // require(['async!https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'], function(){
+            require(['async!https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'], function(){
                 
-
+                    console.log('in async map');
+                    
                     that.myLatlng = new google.maps.LatLng(53.424162,-7.920671);
                     
                     that.myLatlng = new google.maps.LatLng(53.424162,-7.920671);
@@ -62,7 +60,7 @@ define(function (require) {
                        title: 'Christians Brothers College Cork'
                    });
 
-           // });
+            });
 
         },
           

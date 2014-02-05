@@ -27,7 +27,7 @@ define(function (require) {
     return Backbone.Router.extend({
 
         routes: {
-            "": "getNews",
+            "": "getCalendar",
             "news": "getNews",
             "news-item/:id": "getNewsItem",
             "news-flash": "getNewsFlash",
@@ -46,7 +46,7 @@ define(function (require) {
             "student-item/:id": "getStudentItem",
             "twitter": "getTweets",
             "calendar": "getCalendar",
-            "calendar-item/:id": "getPRIORITYCalendarItem",
+            "calendar-item/:id": "getCalendarItem",
             "contact": "getContact",
             "map": "getMap",
             "albums": "getAlbums",
@@ -498,7 +498,7 @@ define(function (require) {
                     calendar = new model.CalendarCollection();
                     
                     calendar.fetch({
-                        full_url: true,
+                        full_url: false,
                         success: function (collection) {
                             Useful.correctView(that.body);
                             slider.slidePage(new CalendarList({collection: collection, message_count:that.message_count}).$el);                          
@@ -543,6 +543,8 @@ define(function (require) {
                 slider.slidePage(mapView.$el);
                 mapView.render();
                 
+                console.log('setting css to 500 and main content is ');
+                console.log(that.body.find('.main-content'));
                 that.body.find('.main-content').css('min-height', '500px');
                 
              });
