@@ -533,14 +533,14 @@ define(function (require) {
         getMap: function () {
             
             require(["app/views/Map"], function (Map) {    
-                var mapView = new Map({message_count:that.message_count});
+                var mapView = new Map({body:that.body, message_count:that.message_count});
                 //mapView.delegateEvents();
                 Useful.correctView(that.body);
                 
                 //make mian-content have height of 100%;
 
                 
-                slider.slidePage(mapView({'body':that.body}).$el);
+                slider.slidePage(mapView.$el);
                 mapView.render();
                 
                 that.body.find('.main-content').css('min-height', '500px');
