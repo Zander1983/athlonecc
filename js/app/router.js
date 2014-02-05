@@ -72,6 +72,7 @@ define(function (require) {
 
             this.device_id = this.storage.getItem(project_title+'_device_id');
             this.api_key = this.storage.getItem(project_title+'_api_key');
+            
  
             if(typeof(this.device_id)!=='undefined' && this.device_id!==null){
                 //only update counter if we know device_id. the first time gets installed, 
