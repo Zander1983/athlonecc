@@ -27,7 +27,7 @@ define(function (require) {
     return Backbone.Router.extend({
 
         routes: {
-            "": "getNotificationPlay",
+            "": "getNews",
             "news": "getNews",
             "news-item/:id": "getNewsItem",
             "news-flash": "getNewsFlash",
@@ -601,7 +601,7 @@ define(function (require) {
 
                         if(typeof(that.device_id)==='undefined' || that.device_id===null || typeof(that.api_key)==='undefined' || that.api_key===null){
                             Useful.correctView(that.body);
-                            alert('There was a problem with notifications, please contact the developer');
+                            Useful.showAlert('Could not get notification settings, please try again later');
                             window.location.hash = "news";
                         }
                         else{              

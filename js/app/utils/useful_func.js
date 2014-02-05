@@ -86,6 +86,22 @@ define(function (require) {
            body.scrollTop(0);
     };
     
+    UsefulFuncs.showAlert = function(text, title, klass) {
+        alert(text);
+        /*$('.alert').removeClass("alert-error alert-warning alert-success alert-info");
+        $('.alert').addClass(klass);
+        $('.alert').html('<strong>' + title + '</strong> ' + text);
+        $('.alert').show();*/
+    };
+    
+    UsefulFuncs.showConfirm = function(text, title, klass) {
+        return confirm(text);
+        /*$('.alert').removeClass("alert-error alert-warning alert-success alert-info");
+        $('.alert').addClass(klass);
+        $('.alert').html('<strong>' + title + '</strong> ' + text);
+        $('.alert').show();*/
+    };
+    
     return UsefulFuncs;
 
     
