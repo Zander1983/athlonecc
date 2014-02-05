@@ -35,7 +35,7 @@ var app = {
                 headers :{device_id:standard_device_id,
                 api_key:standard_api_key},
                 success: function(data){
-                    alert('successfuilly saved');
+
                     var obj = jQuery.parseJSON(data);
                 
                     var device_id = obj.id;
@@ -48,7 +48,6 @@ var app = {
                 },
                 error:   function(model, xhr, options){
 
-                     alert('there was an error');
                     console.log('response is : ');
                     console.log(app.logObject(xhr));
                 },
