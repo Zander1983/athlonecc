@@ -27,8 +27,8 @@ define(function (require) {
             /*
             url: function(){
                     return "/school-proxy.php?type=newsflash";
-                 },*/
-            
+                 },
+            */
         
             parse: function (data) {
 

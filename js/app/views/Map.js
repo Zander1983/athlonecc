@@ -8,20 +8,38 @@ define(function (require) {
         side_nav                = require('text!tpl/SideNav.html'),
         side_template = _.template(side_nav),
         template = _.template(tpl),
-        that;
+        that;    
+ 
+ 
+     function clickAway(event) {
+    
+        console.log('in click away back buttong and setting css, main content is ');
+        console.log(that.body.find('.main-content'));
+        that.body.find('.main-content').css('min-height', '1150px');
+    
+       document.removeEventListener('backbutton', clickAway);
+        
+    }
 
 
     return Backbone.View.extend({
 
-        initialize: function () {
+        initialize: function (options) {
+            this.body = options.body;
             that = this;
             this.render();
             
+            document.addEventListener('backbutton', clickAway);
         },
+                
+                
+                
+  
                 
         initMap: function () {
             
-            require(['async!https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'], function(){
+           // require(['async!https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'], function(){
+                
 
                     that.myLatlng = new google.maps.LatLng(53.424162,-7.920671);
                     
@@ -44,8 +62,22 @@ define(function (require) {
                        title: 'Christians Brothers College Cork'
                    });
 
-            });
+           // });
 
+        },
+          
+        
+        events: {
+             //"click input": "notificationClicked",
+             "click .map-menu-button"   : "menuClicked",
+        },
+        
+        menuClicked: function(){
+    
+            console.log('in menuClicked and setting css, main content is ');
+            console.log(that.body.find('.main-content'));
+            that.body.find('.main-content').css('min-height', '1150px');
+    
         },
 
 

@@ -46,7 +46,7 @@ define(function (require) {
             "student-item/:id": "getStudentItem",
             "twitter": "getTweets",
             "calendar": "getCalendar",
-            "calendar-item/:id": "getCalendarItem",
+            "calendar-item/:id": "getPRIORITYCalendarItem",
             "contact": "getContact",
             "map": "getMap",
             "albums": "getAlbums",
@@ -126,6 +126,7 @@ define(function (require) {
 
       
         getNews: function (id) {
+                
 
             require(["app/models/news", "app/views/NewsList"], function (model, NewsList) {
        
@@ -172,8 +173,9 @@ define(function (require) {
                             Useful.correctView(that.body);
                             slider.slidePage(new NewsFlashList({collection: collection, message_count:that.message_count}).$el);
                         },
-                        error: function(){
+                        error: function(model, xhr, options){
                                 console.log('there was an error');
+                                console.log(xhr.responseText);
                         }
                     });
                 }
@@ -534,9 +536,15 @@ define(function (require) {
                 var mapView = new Map({message_count:that.message_count});
                 //mapView.delegateEvents();
                 Useful.correctView(that.body);
-                slider.slidePage(mapView.$el);
+                
+                //make mian-content have height of 100%;
+
+                
+                slider.slidePage(mapView({'body':that.body}).$el);
                 mapView.render();
-                //google.maps.event.trigger(mapView.map, 'resize');
+                
+                that.body.find('.main-content').css('min-height', '500px');
+                
              });
         },
                 

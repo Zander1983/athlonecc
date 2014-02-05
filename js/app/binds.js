@@ -3,15 +3,12 @@
  * and open the template in the editor.
  */
 define(function() {
+    
+
 
     var doBinds = function(n) {
 
             var body = $('body');
-   
-            body.on("click", ".back-button", function (event) {
-                event.preventDefault();
-                window.history.back();
-            });
             
 
             body.on("click", "#slide-menu-button", function (e) {
@@ -19,17 +16,25 @@ define(function() {
                 if (body.hasClass('left-nav')) {
 
                     body.removeClass('left-nav');
-                    /*$('.side-nav').hide();*/
+                   // $('.side-nav').hide();
                 } else {
-                    //$('.side-nav').show();
+                   // $('.side-nav').show();
                     body.addClass('left-nav');           
                 }
             });
+            
+            /*
+            document.addEventListener("backbutton", function(){
+                
+                return true;
+                
+            }, false);*/
+            
 
             body.on("click", ".main-content", function (e) {
 
                 body.removeClass('left-nav');
-              /*  $('.side-nav').hide();*/
+                //$('.side-nav').hide();
 
             });
 
