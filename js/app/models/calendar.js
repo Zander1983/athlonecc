@@ -27,16 +27,16 @@ define(function (require) {
         CalendarCollection = Backbone.Collection.extend({
 
             model: Calendar,
-           // url: 'https://www.google.com/calendar/feeds/athlonecc.college@gmail.com/public/full?orderby=starttime&sortorder=ascending&max-results=10&futureevents=true',
+            url: 'https://www.google.com/calendar/feeds/athlonecc.college@gmail.com/public/full?orderby=starttime&sortorder=ascending&max-results=10&futureevents=true',
             
             //athlonecc.college@gmail.com
 
             //This is used so I can test on a browser. On a device, use the direct link
            
-           
+           /*
             url: function(){
                     return "/school-proxy.php?type=calendar";
-                 },
+                 },*/
             
         
             parse: function (data) {

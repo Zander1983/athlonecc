@@ -27,7 +27,7 @@ define(function (require) {
     return Backbone.Router.extend({
 
         routes: {
-            "": "getCalendar",
+            "": "getNews",
             "news": "getNews",
             "news-item/:id": "getNewsItem",
             "news-flash": "getNewsFlash",
@@ -498,7 +498,7 @@ define(function (require) {
                     calendar = new model.CalendarCollection();
                     
                     calendar.fetch({
-                        full_url: false,
+                        full_url: true,
                         success: function (collection) {
                             Useful.correctView(that.body);
                             slider.slidePage(new CalendarList({collection: collection, message_count:that.message_count}).$el);                          
