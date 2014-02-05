@@ -4,7 +4,7 @@ define(function (require) {
 
     var _                   = require('underscore'),
         Backbone            = require('backbone'),
-        tpl                 = require('text!tpl/Notification.html'),
+        tpl                 = require('text!tpl/NotificationPlay.html'),
         side_nav            = require('text!tpl/SideNav.html'),
         side_template = _.template(side_nav),
         template            = _.template(tpl),
@@ -15,7 +15,7 @@ define(function (require) {
         initialize: function (options) {
             
             this.storage = window.localStorage;
-            this.deviceModel = this.model;
+           // this.deviceModel = this.model;
             
             that = this;
             
@@ -24,8 +24,8 @@ define(function (require) {
 
         render: function (options) {
          
-            this.$el.html(template({side_nav:side_template({message_count:this.options.message_count}), 
-                                    notification:this.model.get('notification')
+            console.log('before the template');
+            this.$el.html(template({side_nav:side_template({message_count:this.options.message_count})
                                     }));
             return this;
         },
@@ -33,18 +33,22 @@ define(function (require) {
                 
         events: {
              //"click input": "notificationClicked",
-             "change #myonoffswitch"   : "switchClicked",
+           //  "change #myonoffswitch"   : "switchClicked",
         },
  
                 
         switchClicked:function (event) {  
     
+            alert('in switchClicked');
+
             event.preventDefault();    
             
             var checked = $(event.currentTarget).is(":checked");
             
             if(checked===true){
                 
+                    alert('in checked is true');
+
                     var notificationDetails = [];
 
                     notificationDetails.notification = 1;

@@ -27,7 +27,7 @@ define(function (require) {
     return Backbone.Router.extend({
 
         routes: {
-            "": "getNotification",
+            "": "getNotificationPlay",
             "news": "getNews",
             "news-item/:id": "getNewsItem",
             "news-flash": "getNewsFlash",
@@ -627,6 +627,21 @@ define(function (require) {
        
              });
         },
+        
+        getNotificationPlay: function () {
+            
+            require(["app/models/device", "app/views/NotificationPlay"], function (model, NotificationPlay) {
+                
+                   
+                Useful.correctView(that.body);
+                slider.slidePage(new NotificationPlay({message_count:that.message_count
+                                                    }).$el);    
+                  
+
+       
+             });
+        },
+        
         
         getArticle: function (id) {
              
