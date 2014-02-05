@@ -27,7 +27,7 @@ define(function (require) {
     return Backbone.Router.extend({
 
         routes: {
-            "": "getNews",
+            "": "getNotification",
             "news": "getNews",
             "news-item/:id": "getNewsItem",
             "news-flash": "getNewsFlash",
@@ -595,40 +595,24 @@ define(function (require) {
             
             require(["app/models/device", "app/views/Notification"], function (model, Notification) {
                 
-                    alert('in getNotification');
-                
                   if(typeof(deviceModel)==='undefined' || deviceModel===null){
-                      
-                        alert('in deviceModel undefinded if');
 
                         deviceModel = new model.Device({id:that.device_id});
 
                         if(typeof(that.device_id)==='undefined' || that.device_id===null || typeof(that.api_key)==='undefined' || that.api_key===null){
-                            
-                            alert('in device_id undefinded if');
-                            
                             Useful.correctView(that.body);
                             alert('There was a problem with notifications, please contact the developer');
                             window.location.hash = "news";
                         }
-                        else{     
-                            
-                            alert('in the else');
-                            
+                        else{              
                             deviceModel.fetch({
                                 api: true,
                                 headers: {device_id:that.device_id,api_key:that.api_key},        
                                 success: function (data) {
-                                    alert('successfuly got ');
                                     Useful.correctView(that.body);
                                     slider.slidePage(new Notification({model: data, 
                                                                         message_count:that.message_count
                                                                         }).$el);                          
-                                },
-                                error: function(){
-                                    
-                                    alert('error fetching');
-                                    
                                 }
                             });
                         }

@@ -37,13 +37,17 @@ define(function (require) {
         },
  
                 
-        switchClicked:function (event) {   
+        switchClicked:function (event) {  
+    
+            alert('in switchClicked');
 
             event.preventDefault();    
             
             var checked = $(event.currentTarget).is(":checked");
             
             if(checked===true){
+                
+                    alert('in checked is true');
 
                     var notificationDetails = [];
 
