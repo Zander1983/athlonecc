@@ -27,8 +27,14 @@ define(function (require) {
     
             var href = $(e.currentTarget).attr('rel');
             
-            //Android ONLY - ios can you inAppBrowser
-            navigator.app.loadUrl(href, { openExternal:true });
+            if (window.device.platform == 'android' || window.device.platform == 'Android') {
+                //Android ONLY - ios can you inAppBrowser
+                navigator.app.loadUrl(href, { openExternal:true });
+            
+            }
+            else{
+                window.open(href, '_blank');
+            }
             
         },
                 

@@ -33,7 +33,6 @@ define(function (require) {
             
             }
             else{
-                console.log('its ios so using inAppBrowser....');
                 window.open(href, '_blank');
             }
             
