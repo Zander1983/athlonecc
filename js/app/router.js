@@ -712,6 +712,8 @@ define(function (require) {
              
                 if(typeof(articles)==='undefined' || articles===null){
                     
+                    
+                    console.log('in articles undefined');
                     articles = new models.ArticleCollection({device_id: that.device_id, project_title: project_title
                                                             });
 
@@ -719,16 +721,21 @@ define(function (require) {
                         api: true,
                         headers: {device_id:that.device_id,api_key:that.api_key},
                         success: function (collection) {
+                            console.log('in success, collection length is ');
+                            console.log(collection.length);
                             Useful.correctView(that.body);
                             slider.slidePage(new ArticleList({collection: collection,message_count:that.message_count}).$el);
                         }, 
-                        error: function(){
-                            console.log('failed to fecth artcie');
+                        error: function(model, xhr, options){
+                                console.log('there was an error, response is ');
+                                console.log(xhr.responseText);
                         }
                     }); 
 
                 }
                 else{
+                    console.log('in the else and articles is ');
+                    console.log(articles);
                     Useful.correctView(that.body);
                     slider.slidePage(new ArticleList({collection: articles,message_count:that.message_count}).$el);
                 }
