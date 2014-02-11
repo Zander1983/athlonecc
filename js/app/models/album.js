@@ -48,7 +48,7 @@ define(function (require) {
                     num_photos = $(this).attr('photos');
          
                     parsed_albums.push({id:id, title: title, num_photos:num_photos});
-                   id++;
+                   
                 });
 
                 return parsed_albums;

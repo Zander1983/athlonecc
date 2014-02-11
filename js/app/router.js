@@ -59,6 +59,7 @@ define(function (require) {
             "prospectus-item/:id": "getProspectusItem",
             "school-calendar": "getSchoolCalendar",
             "school-calendar-item/:id": "getSchoolCalendarItem",
+            "waypay": "getWayPay",
         },
         
         initialize: function() {   
@@ -109,13 +110,20 @@ define(function (require) {
                     }
                     else{
                         //this is when testing in a browser
-                        //options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
                         options.url = "http://localhost/schoolspace/cli/athlonecc/www/scripts" + options.url
+    
                     }
                 }
   
            });
 
+        },
+                
+        
+        setDeviceDetails: function(){
+  
+            this.device_id = this.storage.getItem(project_title+'_device_id');
+            this.api_key = this.storage.getItem(project_title+'_api_key');
         },
                 
         routeChange: function(){
@@ -539,13 +547,10 @@ define(function (require) {
                 Useful.correctView(that.body);
                 
                 //make mian-content have height of 100%;
-
-                
+       
                 slider.slidePage(mapView.$el);
                 mapView.render();
-                
-                console.log('setting css to 500 and main content is ');
-                console.log(that.body.find('.main-content'));
+           
                 that.body.find('.main-content').css('min-height', '500px');
                 
              });
@@ -577,7 +582,6 @@ define(function (require) {
          getPhotos: function (id) {
             //body.removeClass('left-nav');
             require(["app/models/photo", "app/views/PhotoList"], function (model, PhotoList) {
-       
 
                     photos = new model.PhotoCollection([], {photoset_id:id, message_count:that.message_count});
                     
@@ -609,10 +613,14 @@ define(function (require) {
                   if(typeof(deviceModel)==='undefined' || deviceModel===null){
 
                         deviceModel = new model.Device({id:that.device_id});
+                        
+                        if(typeof(that.device_id)==='undefined' || that.device_id===null){
+                            that.setDeviceDetails();
+                        }
 
                         if(typeof(that.device_id)==='undefined' || that.device_id===null || typeof(that.api_key)==='undefined' || that.api_key===null){
                             Useful.correctView(that.body);
-                            Useful.showAlert('Could not get notification settings, please try again later');
+                            Useful.showAlert('Could not get notification settings, please try again later', 'Problem');
                             window.location.hash = "news";
                         }
                         else{              
@@ -710,27 +718,37 @@ define(function (require) {
             
             require(["app/models/article", "app/views/ArticleList"], function (models, ArticleList) {
              
+                console.log('before articlises undefined');
                 if(typeof(articles)==='undefined' || articles===null){
                     
+                    console.log('in first if');
                     
-                    console.log('in articles undefined');
-                    articles = new models.ArticleCollection({device_id: that.device_id, project_title: project_title
+                    if(typeof(that.device_id)==='undefined' || that.device_id===null){
+                        that.setDeviceDetails();
+                    }
+                    
+                    if(typeof(that.device_id)!=='undefined' && that.device_id!==null){
+                        
+                        articles = new models.ArticleCollection({device_id: that.device_id, project_title: project_title
                                                             });
-
-                    articles.fetch({
-                        api: true,
-                        headers: {device_id:that.device_id,api_key:that.api_key},
-                        success: function (collection) {
-                            console.log('in success, collection length is ');
-                            console.log(collection.length);
-                            Useful.correctView(that.body);
-                            slider.slidePage(new ArticleList({collection: collection,message_count:that.message_count}).$el);
-                        }, 
-                        error: function(model, xhr, options){
-                                console.log('there was an error, response is ');
-                                console.log(xhr.responseText);
-                        }
-                    }); 
+                        
+                        articles.fetch({
+                            api: true,
+                            headers: {device_id:that.device_id,api_key:that.api_key},
+                            success: function (collection) {
+                                Useful.correctView(that.body);
+                                slider.slidePage(new ArticleList({collection: collection,message_count:that.message_count}).$el);
+                            }, 
+                            error: function(model, xhr, options){
+                                    console.log('there was an error, response is ');
+                                    console.log(xhr.responseText);
+                            }
+                        }); 
+                        
+                    } 
+                    else{
+                        Useful.showAlert('There was aproblem accessing messages, please close and reopen app and try again', 'One moment...');
+                    }
 
                 }
                 else{
@@ -742,6 +760,14 @@ define(function (require) {
   
 
             });
+        },
+        
+        getWayPay: function () {
+            
+            require(["app/views/WayPay"], function (WayPay) {
+                Useful.correctView(that.body);
+                slider.slidePage(new WayPay({message_count:that.message_count}).$el);               
+             });
         },
         
         updateMessageCounter: function(){

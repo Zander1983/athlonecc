@@ -86,12 +86,14 @@ define(function (require) {
            body.scrollTop(0);
     };
     
-    UsefulFuncs.showAlert = function(text, title, klass) {
-        alert(text);
-        /*$('.alert').removeClass("alert-error alert-warning alert-success alert-info");
-        $('.alert').addClass(klass);
-        $('.alert').html('<strong>' + title + '</strong> ' + text);
-        $('.alert').show();*/
+    
+    UsefulFuncs.showAlert = function(text, title) {
+ 
+        navigator.notification.alert(
+            text,  // message
+            function(){},         // callback
+            title            // title
+        );
     };
     
     UsefulFuncs.showConfirm = function(text, title, klass) {

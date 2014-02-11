@@ -15,6 +15,7 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
      
+
     
     /*
      * This function registers the device with the server, and stores the device id and the api key.
@@ -49,7 +50,7 @@ var app = {
                 error:   function(model, xhr, options){
 
                     console.log('response is : ');
-                    console.log(app.logObject(xhr));
+                   // console.log(app.logObject(xhr));
                 },
             });
     },
@@ -188,10 +189,14 @@ var app = {
 
         if ( event.article_id )
         {
+            
             window.location.hash = "article/"+event.article_id;
             //localStorage.payload =// event.payload   
+        }else{
+            window.location.hash = "news";
         }
         
+        /*
         var pushNotification = window.plugins.pushNotification;
         if (event.alert) {
  
@@ -205,7 +210,7 @@ var app = {
             console.log('in event.sound');
             var snd = new Media(event.sound);
             snd.play();
-        }
+        }*/
 
 
     },

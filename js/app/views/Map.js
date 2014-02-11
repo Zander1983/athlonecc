@@ -28,9 +28,6 @@ define(function (require) {
             
             document.addEventListener('backbutton', clickAway);
         },
-                
-                
-                
   
                 
         initMap: function () {

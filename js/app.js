@@ -24,7 +24,6 @@ require(['backbone', 'app/router', 'app/binds'], function (Backbone, Router, Bin
     
     Binds.doBinds();
 
-
     Backbone.history.start();
     
 });
