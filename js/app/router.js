@@ -145,7 +145,10 @@ define(function (require) {
                         full_url: true,
                         success: function (collection) {
                             Useful.correctView(that.body);
-                            slider.slidePage(new NewsList({collection: collection, message_count:that.message_count}).$el);
+                            if(Backbone.history.fragment==="" || Backbone.history.fragment==="news"){
+                               slider.slidePage(new NewsList({collection: collection, message_count:that.message_count}).$el);                                
+                            }
+    
                         },
                         error: function(){
                                 console.log('there was an error');
@@ -718,10 +721,7 @@ define(function (require) {
             
             require(["app/models/article", "app/views/ArticleList"], function (models, ArticleList) {
              
-                console.log('before articlises undefined');
                 if(typeof(articles)==='undefined' || articles===null){
-                    
-                    console.log('in first if');
                     
                     if(typeof(that.device_id)==='undefined' || that.device_id===null){
                         that.setDeviceDetails();

@@ -59,7 +59,7 @@ define(function (require) {
         
 
         render: function (options) {
-            
+
             this.$el.html(template({side_nav:side_template({message_count:this.options.message_count}), 
                                     title:this.model.get('title'),
                                     content: this.model.get('content')
